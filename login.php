@@ -6,16 +6,17 @@ $error_message = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
     $email = trim($_POST['email']);
     $password = $_POST['password'];
-    
+
     try {
-        $stmt = $pdo->prepare("SELECT id, name, email, password FROM users WHERE email = ?");
+        // ✅ Table name fixed: Customers
+        $stmt = $pdo->prepare("SELECT cid, cname, email, password FROM Customers WHERE email = ?");
         $stmt->execute([$email]);
         $user = $stmt->fetch();
-        
-        if ($user && password_verify($password, $user['password'])) {
+
+        if ($user && $password === $user['password']) { // password_verify not needed if passwords are plain text
             $_SESSION['user'] = [
-                'id' => $user['id'],
-                'name' => $user['name'],
+                'id' => $user['cid'],
+                'name' => $user['cname'],
                 'email' => $user['email']
             ];
             header('Location: index.php');
@@ -24,6 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
             $error_message = 'Invalid email or password.';
         }
     } catch (PDOException $e) {
+        // ✅ To see the real error temporarily (remove after test)
+        // echo "Database Error: " . $e->getMessage();
         error_log("Login error: " . $e->getMessage());
         $error_message = 'An error occurred. Please try again.';
     }
@@ -35,13 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         <h2>Login to Your Account</h2>
         <p>Welcome back to Pet Haven!</p>
     </div>
-    
+
     <?php if (!empty($error_message)): ?>
         <div style="background: #FEECEB; color: var(--accent-red); padding: var(--spacing-md); border-radius: 8px; text-align: center; margin-bottom: var(--spacing-lg);">
             <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($error_message); ?>
         </div>
     <?php endif; ?>
-    
+
     <form method="post" style="background: white; padding: var(--spacing-xl); border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
         <div style="margin-bottom: var(--spacing-md);">
             <label for="email" style="display: block; font-weight: 600; margin-bottom: var(--spacing-xs);">Email Address:</label>
