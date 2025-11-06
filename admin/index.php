@@ -1,25 +1,50 @@
 <?php
-require '../includes/db_connect.php';
 session_start();
-if(!isset($_SESSION['user']) || $_SESSION['user']['role']!=='admin'){
-header('Location: /petshop/login.php'); exit;
+if (!isset($_SESSION['admin_id'])) {
+    header('Location: index.php');
+    exit;
 }
-include '../includes/header.php';
-$totalPets = $pdo->query('SELECT COUNT(*) FROM pets')->fetchColumn();
-$totalProducts = $pdo->query('SELECT COUNT(*) FROM products')->fetchColumn();
-$totalOrders = $pdo->query('SELECT COUNT(*) FROM orders')->fetchColumn();
-$totalUsers = $pdo->query('SELECT COUNT(*) FROM users')->fetchColumn();
+require_once __DIR__ . '/../includes/db_connect.php';
 ?>
-<section class="page">
- <h2>Admin Dashboard</h2>
- <div class="stats">
- <div class="stat">Pets: <strong><?php echo $totalPets; ?></strong></div>
- <div class="stat">Products: <strong><?php echo $totalProducts; ?></strong></
-div>
- <div class="stat">Orders: <strong><?php echo $totalOrders; ?></strong></div>
- <div class="stat">Users: <strong><?php echo $totalUsers; ?></strong></div>
- </div>
- <p><a href="pets.php" class="btn-small">Manage Pets</a> <a href="products.php"
-class="btn-small">Manage Products</a></p>
-</section>
-<?php include '../includes/footer.php'; ?>
+
+<?php
+session_start();
+require_once __DIR__ . '/../includes/db_connect.php';
+
+if (isset($_SESSION['admin_id'])) {
+    header('Location: pets.php');
+    exit;
+}
+
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim($_POST['username'] ?? '');
+    $password = $_POST['password'] ?? '';
+
+    $stmt = $pdo->prepare('SELECT admin_id, password_hash, fullname FROM admins WHERE username = ?');
+    $stmt->execute([$username]);
+    $admin = $stmt->fetch();
+
+    if ($admin && password_verify($password, $admin['password_hash'])) {
+        $_SESSION['admin_id'] = $admin['admin_id'];
+        $_SESSION['admin_name'] = $admin['fullname'];
+        header('Location: pets.php');
+        exit;
+    } else {
+        $error = 'Invalid username or password.';
+    }
+}
+?>
+<!DOCTYPE html>
+<html>
+<head><title>Admin Login</title></head>
+<body>
+<h2>Admin Login</h2>
+<?php if ($error): ?><p style="color:red"><?php echo $error; ?></p><?php endif; ?>
+<form method="post">
+  <label>Username:<br><input name="username" required></label><br>
+  <label>Password:<br><input type="password" name="password" required></label><br>
+  <button type="submit">Login</button>
+</form>
+</body>
+</html>
