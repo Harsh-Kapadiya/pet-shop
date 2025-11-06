@@ -130,7 +130,7 @@ try {
 </section>
 
 <!-- Call to Action Section -->
-<section class="cta-section container">
+<section class="cta-section container" style="align-items: center;">
     <div class="cta-content">
         <h2>Keep Your Pet Healthy and Happy</h2>
         <p>Schedule a vet check-up, grooming session, or training consultation with our expert team today!</p>
