@@ -1,97 +1,54 @@
 <?php
 include 'includes/header.php';
+require_once 'includes/db_connect.php';
 
-// Fetch all available pets
-$pets = [];
+// 🐾 Fetch available pets from database
 try {
-    $stmt = $pdo->query("SELECT * FROM pets WHERE status = 'Available' ORDER BY added_date DESC");
-    $pets = $stmt->fetchAll();
+    $stmt = $pdo->query("SELECT * FROM Pets ORDER BY pet_id ASC");
+    $pets = $stmt->fetchAll(PDO::FETCH_ASSOC);
 } catch (PDOException $e) {
-    error_log("Error fetching pets: " . $e->getMessage());
-}
-
-// Handle adoption request
-$adoption_error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['adopt_pet'])) {
-    if (!isset($_SESSION['user'])) {
-        header('Location: login.php');
-        exit;
-    }
-    
-    $pet_id = (int)$_POST['pet_id'];
-    $user_id = $_SESSION['user']['id'];
-    
-    try {
-        $pdo->beginTransaction();
-        
-        // Check if pet is still available with row lock
-        $stmt = $pdo->prepare("SELECT status FROM pets WHERE pet_id = ? FOR UPDATE");
-        $stmt->execute([$pet_id]);
-        $pet = $stmt->fetch();
-        
-        if ($pet && $pet['status'] === 'Available') {
-            // Insert adoption record
-            $stmt = $pdo->prepare("INSERT INTO adoptions (user_id, pet_id) VALUES (?, ?)");
-            $stmt->execute([$user_id, $pet_id]);
-            
-            // Update pet status
-            $stmt = $pdo->prepare("UPDATE pets SET status = 'Adopted' WHERE pet_id = ?");
-            $stmt->execute([$pet_id]);
-            
-            $pdo->commit();
-            header('Location: adopt.php?adopted=1');
-            exit;
-        } else {
-            $adoption_error = "Sorry, this pet is no longer available for adoption.";
-            $pdo->rollBack();
-        }
-    } catch (PDOException $e) {
-        $pdo->rollBack();
-        error_log("Error adopting pet: " . $e->getMessage());
-        $adoption_error = "An error occurred. Please try again.";
-    }
+    die("Error fetching pets: " . $e->getMessage());
 }
 ?>
 
-<section class="container" style="padding: var(--spacing-xxl) var(--spacing-md);">
-    <div class="section-title">
-        <h2>Adopt a Loving Pet</h2>
-        <p>Find your perfect companion from our available pets</p>
-    </div>
-    
-    <?php if (isset($_GET['adopted']) && $_GET['adopted'] == 1): ?>
-        <div style="background: #E6F7EB; color: var(--accent-green); padding: var(--spacing-md); border-radius: 8px; text-align: center; margin-bottom: var(--spacing-xl); max-width: 600px; margin-left: auto; margin-right: auto;">
-            <i class="fas fa-check-circle"></i> Congratulations! Your adoption request has been submitted. <a href="dashboard.php" style="color: var(--primary-green); font-weight: 600;">View your adoptions</a>
+<section class="adopt-section" style="padding: 60px 0; background-color: #f9f9f9;">
+    <div class="container" style="max-width: 1200px; margin: 0 auto;">
+        <div class="section-title" style="text-align: center; margin-bottom: 40px;">
+            <h2 style="font-size: 2rem; margin-bottom: 10px;">Adopt a Pet</h2>
+            <p style="color: #666;">Give a loving home to a furry friend 🐶🐱🐰</p>
         </div>
-    <?php endif; ?>
-    
-    <?php if (!empty($adoption_error)): ?>
-        <div style="background: #FEECEB; color: var(--accent-red); padding: var(--spacing-md); border-radius: 8px; text-align: center; margin-bottom: var(--spacing-xl); max-width: 600px; margin-left: auto; margin-right: auto;">
-            <i class="fas fa-exclamation-circle"></i> <?php echo htmlspecialchars($adoption_error); ?>
-        </div>
-    <?php endif; ?>
-    
-    <?php if (!empty($pets)): ?>
-        <div class="content-grid">
-            <?php foreach ($pets as $pet): ?>
-                <div class="card" id="pet-<?php echo $pet['pet_id']; ?>">
-                    <img src="https://images.unsplash.com/photo-<?php echo $pet['type'] == 'dog' ? '1543466835-00a7907e9de1' : '1514888286974-6c03e2ca1dba'; ?>?w=400&h=300&fit=crop" alt="<?php echo htmlspecialchars($pet['name']); ?>" class="card-image">
-                    <div class="card-content">
-                        <h3><?php echo htmlspecialchars($pet['name']); ?></h3>
-                        <p style="text-transform: capitalize;"><strong><?php echo htmlspecialchars($pet['type']); ?></strong> - <?php echo htmlspecialchars($pet['breed']); ?></p>
-                        <p><strong>Age:</strong> <?php echo htmlspecialchars($pet['age']); ?> years</p>
-                        <p style="color: var(--medium-text); margin-bottom: var(--spacing-md);"><?php echo htmlspecialchars($pet['description']); ?></p>
-                        <form method="post">
-                            <input type="hidden" name="pet_id" value="<?php echo $pet['pet_id']; ?>">
-                            <button type="submit" name="adopt_pet" class="btn">Adopt <?php echo htmlspecialchars($pet['name']); ?></button>
-                        </form>
+
+        <?php if (empty($pets)): ?>
+            <p style="text-align: center; color: #777;">No pets available for adoption right now.</p>
+        <?php else: ?>
+            <div class="pet-grid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+                <?php foreach ($pets as $pet): ?>
+                    <div class="pet-card" style="background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.2s;">
+                        <div style="height: 250px; background: #f0f0f0; display: flex; justify-content: center; align-items: center;">
+                            <?php if (!empty($pet['image'])): ?>
+                                <img src="assets/images/pets/<?php echo htmlspecialchars($pet['image']); ?>" alt="<?php echo htmlspecialchars($pet['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php else: ?>
+                                <img src="assets/images/no-image.png" alt="No Image" style="width: 100%; height: 100%; object-fit: cover;">
+                            <?php endif; ?>
+                        </div>
+
+                        <div style="padding: 20px;">
+                            <h3 style="font-size: 1.3rem; margin-bottom: 8px; color: #333;"><?php echo htmlspecialchars($pet['name']); ?></h3>
+                            <p style="margin-bottom: 5px; color: #666;"><strong>Type:</strong> <?php echo htmlspecialchars($pet['type']); ?></p>
+                            <p style="margin-bottom: 5px; color: #666;"><strong>Breed:</strong> <?php echo htmlspecialchars($pet['breed']); ?></p>
+                            <p style="margin-bottom: 5px; color: #666;"><strong>Age:</strong> <?php echo htmlspecialchars($pet['age']); ?> years</p>
+                            <p style="margin-bottom: 15px; color: #4CAF50;"><strong>Status:</strong> Available</p>
+
+                            <form method="post" action="adopt_request.php" style="text-align: center;">
+                                <input type="hidden" name="pet_id" value="<?php echo $pet['pet_id']; ?>">
+                                <button type="submit" name="adopt" style="background: #4CAF50; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer;">Adopt Now</button>
+                            </form>
+                        </div>
                     </div>
-                </div>
-            <?php endforeach; ?>
-        </div>
-    <?php else: ?>
-        <p class="text-center" style="padding: var(--spacing-xl);">No pets available for adoption at the moment. Please check back soon!</p>
-    <?php endif; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
+    </div>
 </section>
 
 <?php include 'includes/footer.php'; ?>

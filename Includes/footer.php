@@ -22,7 +22,7 @@
                     <h4>Contact</h4>
                     <div class="footer-links">
                         <a href="appointment.php">Book Appointment</a>
-                        <a href="contact.php">Contact Us</a>
+                        <!-- <a href="contact.php">Contact Us</a> -->
                     </div>
                 </div>
                 <div class="footer-section">

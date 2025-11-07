@@ -21,10 +21,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book'])) {
     $date = $_POST['date'];
     $time = $_POST['time'];
     $pet_category = $_POST['pet_category'];
-    $breed = $_POST['breed'];
+    $breed = trim($_POST['breed']);
 
     try {
-        $stmt = $pdo->prepare("INSERT INTO appointments (user_id, doctor_id, appointment_date, appointment_time, pet_category, breed) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $pdo->prepare("INSERT INTO appointments (user_id, doctor_id, appointment_date, appointment_time, pet_category, breed) 
+                               VALUES (?, ?, ?, ?, ?, ?)");
         $stmt->execute([$user_id, $doctor_id, $date, $time, $pet_category, $breed]);
         header('Location: appointment.php?booked=1');
         exit;
@@ -52,18 +53,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book'])) {
             <select name="doctor_id" id="doctor_id" required style="width: 100%; padding: 12px; border: 1px solid var(--grey-300); border-radius: 8px; font-size: 1rem;">
                 <option value="">Choose a veterinarian...</option>
                 <?php foreach ($doctors as $doctor): ?>
-                    <option value="<?php echo $doctor['doctor_id']; ?>"><?php echo htmlspecialchars($doctor['doctor_name']); ?><?php echo $doctor['specialization'] ? ' - ' . htmlspecialchars($doctor['specialization']) : ''; ?></option>
+                    <option value="<?php echo $doctor['doctor_id']; ?>">
+                        <?php echo htmlspecialchars($doctor['doctor_name']); ?>
+                        <?php if (!empty($doctor['specialization'])) echo ' - ' . htmlspecialchars($doctor['specialization']); ?>
+                    </option>
                 <?php endforeach; ?>
             </select>
         </div>
+
         <div style="margin-bottom: var(--spacing-md);">
             <label for="date" style="display: block; font-weight: 600; margin-bottom: var(--spacing-xs);">Appointment Date:</label>
             <input type="date" name="date" id="date" required style="width: 100%; padding: 12px; border: 1px solid var(--grey-300); border-radius: 8px; font-size: 1rem;" min="<?php echo date('Y-m-d'); ?>">
         </div>
+
         <div style="margin-bottom: var(--spacing-md);">
             <label for="time" style="display: block; font-weight: 600; margin-bottom: var(--spacing-xs);">Preferred Time:</label>
             <input type="time" name="time" id="time" required style="width: 100%; padding: 12px; border: 1px solid var(--grey-300); border-radius: 8px; font-size: 1rem;">
         </div>
+
         <div style="margin-bottom: var(--spacing-md);">
             <label for="pet_category" style="display: block; font-weight: 600; margin-bottom: var(--spacing-xs);">Pet Type:</label>
             <select name="pet_category" id="pet_category" required style="width: 100%; padding: 12px; border: 1px solid var(--grey-300); border-radius: 8px; font-size: 1rem;">
@@ -74,10 +81,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book'])) {
                 <option value="other">Other</option>
             </select>
         </div>
+
         <div style="margin-bottom: var(--spacing-lg);">
             <label for="breed" style="display: block; font-weight: 600; margin-bottom: var(--spacing-xs);">Breed (if known):</label>
             <input type="text" name="breed" id="breed" style="width: 100%; padding: 12px; border: 1px solid var(--grey-300); border-radius: 8px; font-size: 1rem;">
         </div>
+
         <button type="submit" name="book" class="btn btn-secondary" style="width: 100%;">Book Appointment</button>
     </form>
 </section>

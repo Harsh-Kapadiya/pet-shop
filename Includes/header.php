@@ -28,8 +28,8 @@ require_once __DIR__ . '/db_connect.php';
                 <a href="about.php">About</a>
                 <a href="adopt.php">Adopt</a>
                 <a href="shop.php">Shop</a>
-                <a href="appointment.php">Appointment</a>
-                <a href="contact.php">Contact</a>
+                <a href="appoitment.php">Appointment</a>
+                <!-- <a href="contact.php">Contact</a> -->
                 
                 <?php if(isset($_SESSION['user'])): ?>
                     <a href="dashboard.php">Dashboard</a>
