@@ -2,7 +2,7 @@
 // admin/pets.php
 
 session_start();
-require_once '../includes/db_connect.php';
+require_once 'includes/db_connect.php';
 
 // 🧩 Fetch all pets from database
 try {

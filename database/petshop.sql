@@ -1,15 +1,13 @@
--- ----------------------------------------------
--- -------------- DATABASE CREATION -------------
--- ----------------------------------------------
+-- -----------------------------------------------------
+-- DATABASE CREATION
+-- -----------------------------------------------------
 CREATE DATABASE petshop;
 USE petshop;
 
-
--- ----------------------------------------------
+-- -----------------------------------------------------
 -- 1. PETS TABLE
--- ----------------------------------------------
-
-CREATE TABLE Pets(
+-- -----------------------------------------------------
+CREATE TABLE Pets (
     pet_id INT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
     type VARCHAR(50) NOT NULL,
@@ -33,41 +31,39 @@ INSERT INTO Pets (pet_id, name, type, breed, age) VALUES
 (13, 'Shadow', 'dog', 'German Shepherd', 5),
 (14, 'Chloe', 'cat', 'Sphynx', 1);
 
-
--- ----------------------------------------------
--- 2. PRODUCTS TABLE
--- ----------------------------------------------
-
-CREATE TABLE Products(
+-- -----------------------------------------------------
+-- 2. PRODUCTS TABLE (updated with image path)
+-- -----------------------------------------------------
+CREATE TABLE Products (
     product_id INT PRIMARY KEY,
     product_name VARCHAR(100),
     product_for VARCHAR(50),
     price DECIMAL(10,2),
-    stock_quantity INT
+    stock_quantity INT,
+    images VARCHAR(255)
 );
 
-INSERT INTO Products (product_id, product_name, product_for, price, stock_quantity) VALUES
-(1, 'Cat Food', 'cat', 20.00, 50),
-(2, 'Dog Toy', 'dog', 15.00, 30),
-(3, 'Leash', 'dog', 25.00, 20),
-(4, 'Cat Scratcher', 'cat', 30.00, 15),
-(5, 'Dog Shampoo', 'dog', 18.00, 25),
-(6, 'Cat Litter', 'cat', 12.00, 40),
-(7, 'Pet Bed', 'dog', 35.00, 10),
-(8, 'Cat Collar', 'cat', 8.00, 60),
-(9, 'Dog Bowl', 'dog', 10.00, 50),
-(10, 'Cat Treats', 'cat', 14.00, 70),
-(11, 'Pet Blanket', 'dog', 22.00, 20),
-(12, 'Fish Food', 'fish', 5.00, 80),
-(13, 'Bird Cage', 'bird', 45.00, 10),
-(14, 'Turtle Tank', 'turtle', 90.00, 5);
+INSERT INTO Products (product_id, product_name, product_for, price, stock_quantity, images) VALUES
+(1, 'Cat Food', 'cat', 20.00, 50, 'dog_food.jpg'),
+(2, 'Dog Toy', 'dog', 15.00, 30, 'dog_food.jpg'),
+(3, 'Leash', 'dog', 25.00, 20, 'dog_food.jpg'),
+(4, 'Cat Scratcher', 'cat', 30.00, 15, 'dog_food.jpg'),
+(5, 'Dog Shampoo', 'dog', 18.00, 25, 'dog_food.jpg'),
+(6, 'Cat Litter', 'cat', 12.00, 40, 'dog_food.jpg'),
+(7, 'Pet Bed', 'dog', 35.00, 10, 'dog_food.jpg'),
+(8, 'Cat Collar', 'cat', 8.00, 60, 'dog_food.jpg'),
+(9, 'Dog Food', 'dog', 10.00, 50, 'dog_food.jpg'),
+(10, 'Cat Treats', 'cat', 14.00, 70, 'dog_food.jpg'),
+(11, 'Pet Blanket', 'dog', 22.00, 20, 'dog_food.jpg'),
+(12, 'Fish Food', 'fish', 5.00, 80, 'dog_food.jpg'),
+(13, 'Bird Cage', 'bird', 45.00, 10, 'dog_food.jpg'),
+(14, 'Turtle Tank', 'turtle', 90.00, 5, 'dog_food.jpg');
 
 
--- ----------------------------------------------
+-- -----------------------------------------------------
 -- 3. CUSTOMERS TABLE
--- ----------------------------------------------
-
-CREATE TABLE Customers(
+-- -----------------------------------------------------
+CREATE TABLE Customers (
     cid INT PRIMARY KEY,
     cname VARCHAR(100) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
@@ -92,12 +88,10 @@ INSERT INTO Customers (cid, cname, email, address, ph_no, password) VALUES
 (13, 'Riya', 'riya@gmail.com', '45 Sun Rd, Patna', 9090123456, 'riya456'),
 (14, 'Kunal', 'kunal@gmail.com', '87 River Rd, Northcity', 9123456780, 'kunal007');
 
-
--- ----------------------------------------------
+-- -----------------------------------------------------
 -- 4. DOCTORS TABLE
--- ----------------------------------------------
-
-CREATE TABLE Doctors(
+-- -----------------------------------------------------
+CREATE TABLE Doctors (
     doctor_id INT PRIMARY KEY,
     doctor_name VARCHAR(100)
 );
@@ -118,12 +112,10 @@ INSERT INTO Doctors (doctor_id, doctor_name) VALUES
 (13, 'Dr. Naik'),
 (14, 'Dr. Reddy');
 
-
--- ----------------------------------------------
--- 5. APPOINTMENT TABLE
--- ----------------------------------------------
-
-CREATE TABLE Book_appointment(
+-- -----------------------------------------------------
+-- 5. BOOK APPOINTMENT TABLE
+-- -----------------------------------------------------
+CREATE TABLE Book_appointment (
     appointment_id INT PRIMARY KEY,
     doctor_id INT,
     time DATETIME,
@@ -152,12 +144,10 @@ INSERT INTO Book_appointment (appointment_id, doctor_id, time, pet_category, bre
 (13, 13, '2024-07-13 10:30:00', 'cat', 'Maine Coon', 6, 13),
 (14, 14, '2024-07-14 13:30:00', 'dog', 'Beagle', 4, 14);
 
-
--- ----------------------------------------------
+-- -----------------------------------------------------
 -- 6. ADMIN TABLE
--- ----------------------------------------------
-
-CREATE TABLE Admin(
+-- -----------------------------------------------------
+CREATE TABLE Admin (
     admin_id INT PRIMARY KEY,
     shop_address VARCHAR(255),
     ph_no BIGINT,
@@ -183,12 +173,10 @@ INSERT INTO Admin (admin_id, shop_address, ph_no, doctor_id, product_id) VALUES
 (13, '84 Ocean Ave, Cityville', 9876500130, 13, 13),
 (14, '21 Elm St, Eastend', 9876500140, 14, 14);
 
-
--- ----------------------------------------------
+-- -----------------------------------------------------
 -- 7. ADOPTIONS TABLE
--- ----------------------------------------------
-
-CREATE TABLE Adoptions(
+-- -----------------------------------------------------
+CREATE TABLE Adoptions (
     adoption_id INT PRIMARY KEY,
     adoption_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     cid INT,
@@ -213,12 +201,10 @@ INSERT INTO Adoptions (adoption_id, cid, pet_id) VALUES
 (13, 13, 3),
 (14, 14, 8);
 
-
--- ----------------------------------------------
+-- -----------------------------------------------------
 -- 8. ORDERS TABLE
--- ----------------------------------------------
-
-CREATE TABLE Orders(
+-- -----------------------------------------------------
+CREATE TABLE Orders (
     order_id INT PRIMARY KEY,
     cid INT,
     product_id INT,
@@ -245,7 +231,6 @@ INSERT INTO Orders (order_id, cid, product_id, quantity, total_price) VALUES
 (13, 13, 13, 1, 45.00),
 (14, 14, 14, 1, 90.00);
 
-
--- ----------------------------------------------
--- Database setup completed
--- ----------------------------------------------
+-- -----------------------------------------------------
+-- ✅ Database setup completed successfully
+-- -----------------------------------------------------

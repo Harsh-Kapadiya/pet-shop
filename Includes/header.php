@@ -5,6 +5,8 @@ if (session_status() == PHP_SESSION_NONE) {
 }
 
 // Include database connection
+// At the top of db_connect.php or a config file
+define('BASE_URL', '/'); // Adjust if in subfolder, e.g., '/petshop/'
 require_once __DIR__ . '/db_connect.php';
 ?>
 <!DOCTYPE html>
