@@ -161,16 +161,15 @@ CREATE TABLE Admin (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
-INSERT INTO Admin (admin_id, shop_address, ph_no, doctor_id, product_id) VALUES
-(1, '456 Pet St, Cityville', 9876543210, 1, 2),
-(2, '789 Park Ave, Metrocity', 9876500020, 2, 4)
+INSERT INTO Admin (admin_name, admin_id, shop_address, emial, password, ph_no, doctor_id, product_id) VALUES
+('Harsh',1, '456 Pet St, Cityville', 'harsh2345@gmail.com',123456789, 9876543210, 1, 2),
+('Vikas', 2, '789 Park Ave, Metrocity','vk284356@gmail.com', 456789123, 9876500020, 2, 4)
 
 -- -----------------------------------------------------
 -- 7. ADOPTIONS TABLE
 -- -----------------------------------------------------
 CREATE TABLE Adoptions (
     adoption_id INT PRIMARY KEY,
-    adoption_date DATETIME DEFAULT CURRENT_TIMESTAMP,
     cid INT,
     pet_id INT,
     FOREIGN KEY (cid) REFERENCES Customers(cid),

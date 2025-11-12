@@ -11,22 +11,22 @@ require_once 'includes/db_connect.php';
 
     <div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap;">
         <!-- Admin Signup -->
-        <a href="admin/admin_signup.php"
+        <a href="admin/admin_login.php"
             style="background: var(--primary-green); color:white; padding:15px 35px; border-radius:12px; text-decoration:none; font-size:1.2rem; font-weight:600; transition: all 0.3s;">
-            Admin Signup
+            Admin Login
         </a>
 
         <!-- Customer Signup -->
-        <a href="signup.php"
+        <a href="login.php"
             style="background: var(--accent-yellow); color:black; padding:15px 35px; border-radius:12px; text-decoration:none; font-size:1.2rem; font-weight:600; transition: all 0.3s;">
-            Customer Signup
+            Customer Login
         </a>
     </div>
 
     <div style="margin-top:40px;">
         <p style="color:var(--medium-text); font-size:0.95rem;">
             Already have an account?
-            <a href="login_redirect.php" style="color:var(--primary-green); font-weight:600; text-decoration:none;">Login here</a>
+            <a href="signup_redirect.php" style="color:var(--primary-green); font-weight:600; text-decoration:none;">SignUp Here </a>
         </p>
     </div>
 </section>

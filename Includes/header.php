@@ -38,7 +38,7 @@ require_once __DIR__ . '/db_connect.php';
                     <span class="user-greeting">Hi, <?php echo htmlspecialchars($_SESSION['user']['name']); ?>!</span>
                     <a href="logout.php" class="btn btn-outline">Logout</a>
                 <?php else: ?>
-                    <a href="login.php" class="btn btn-outline">Login</a>
+                    <a href="login_redirect.php" class="btn btn-outline">Login</a>
                     <a href="signup_redirect.php" class="btn btn-secondary">Sign Up</a>
                 <?php endif; ?>
             </nav>

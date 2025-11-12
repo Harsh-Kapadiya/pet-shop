@@ -1,5 +1,5 @@
 <?php
-include 'admin/includes/header.php';
+include 'includes/header.php';
 
 $error_message = '';
 $success_message = '';
@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
         </div>
     <?php endif; ?>
 
-    <form method="post" style="background: white; padding: var(--spacing-xl); border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+    <form method="post" style="background: white; padding: var(--spacing-xl); border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,1);">
         <div style="margin-bottom: var(--spacing-md);">
             <label for="name" style="display: block; font-weight: 600; margin-bottom: var(--spacing-xs);">Full Name:</label>
             <input type="text" name="name" id="name" required style="width: 100%; padding: 12px; border: 1px solid var(--grey-300); border-radius: 8px; font-size: 1rem;">
