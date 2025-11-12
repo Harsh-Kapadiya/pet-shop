@@ -12,24 +12,25 @@ CREATE TABLE Pets (
     name VARCHAR(100) NOT NULL,
     type VARCHAR(50) NOT NULL,
     breed VARCHAR(100),
-    age INT
+    age INT,
+    images varchar(150)
 );
 
-INSERT INTO Pets (pet_id, name, type, breed, age) VALUES
-(1, 'Luna', 'cat', 'Persian', 2),
-(2, 'Charlie', 'dog', 'Golden Retriever', 3),
-(3, 'Milo', 'cat', 'Siamese', 1),
-(4, 'Bella', 'dog', 'Beagle', 4),
-(5, 'Rocky', 'dog', 'Labrador', 2),
-(6, 'Coco', 'cat', 'Maine Coon', 3),
-(7, 'Max', 'dog', 'Pug', 1),
-(8, 'Simba', 'cat', 'Bengal', 2),
-(9, 'Buddy', 'dog', 'Husky', 4),
-(10, 'Daisy', 'cat', 'British Shorthair', 5),
-(11, 'Bruno', 'dog', 'Bulldog', 3),
-(12, 'Oreo', 'cat', 'Ragdoll', 2),
-(13, 'Shadow', 'dog', 'German Shepherd', 5),
-(14, 'Chloe', 'cat', 'Sphynx', 1);
+INSERT INTO Pets (pet_id, name, type, breed, age, images) VALUES
+(1, 'Luna', 'cat', 'Persian', 2, luna.jpg),
+(2, 'Charlie', 'dog', 'Golden Retriever', 3,charlie.jpg),
+(3, 'Milo', 'cat', 'Siamese', 1, milo.jpg),
+(4, 'Bella', 'dog', 'Beagle', 4, bella.jpg),
+(5, 'Rocky', 'dog', 'Labrador', 2, rocky.jpg),
+(6, 'Coco', 'cat', 'Maine Coon', 3, coco.jpg),
+(7, 'Max', 'dog', 'Pug', 1, max.jpg),
+(8, 'Simba', 'cat', 'Bengal', 2, simba.jpg),
+(9, 'Buddy', 'dog', 'Husky', 4, buddy.jpg),
+(10, 'Daisy', 'cat', 'British Shorthair', 5, daisy.jpg),
+(11, 'Bruno', 'dog', 'Bulldog', 3, bruno.jpg),
+(12, 'Oreo', 'cat', 'Ragdoll', 2, oreo.jpg),
+(13, 'Shadow', 'dog', 'German Shepherd', 5, shadow.jpg),
+(14, 'Chloe', 'cat', 'Sphynx', 1, chloe.jpg);
 
 -- -----------------------------------------------------
 -- 2. PRODUCTS TABLE (updated with image path)
