@@ -66,17 +66,19 @@ try {
 
                         <!-- Product Image -->
                         <div style="height: 220px; background: #f0f0f0; display: flex; justify-content: center; align-items: center;">
-                            <?php if (!empty($product['images'])): ?>
-                                <img src="../assets/images/Products/<?php echo htmlspecialchars($product['images']); ?>"
-                                alt="<?php echo htmlspecialchars($product['product_name'] ?? 'No Image'); ?>"
-                                style="max-height: 100%; max-width: 100%; object-fit: cover;">
-
+                            <?php if (empty($product['images'])): ?>
+                                <img src="assets/images/Products/no-image.png"
+                                    alt="No Image"
+                                    style="max-height: 100%; max-width: 100%; object-fit: cover;">
+                                
                             <?php else: ?>
-                                <div style="color: #999; text-align: center;">No Image</div>
+                                <img src="assets/images/Products/<?php echo htmlspecialchars($product['images']); ?>"
+                                    alt="<?php echo htmlspecialchars($product['product_name'] ?? ''); ?>"
+                                    style="max-height: 100%; max-width: 100%; object-fit: cover;">
 
+                                
                             <?php endif; ?>
                         </div>
-
 
                         <!-- Product Info -->
                         <div style="padding: 20px;">

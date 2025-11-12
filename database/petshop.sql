@@ -44,20 +44,20 @@ CREATE TABLE Products (
 );
 
 INSERT INTO Products (product_id, product_name, product_for, price, stock_quantity, images) VALUES
-(1, 'Cat Food', 'cat', 20.00, 50, 'dog_food.jpg'),
-(2, 'Dog Toy', 'dog', 15.00, 30, 'dog_food.jpg'),
-(3, 'Leash', 'dog', 25.00, 20, 'dog_food.jpg'),
-(4, 'Cat Scratcher', 'cat', 30.00, 15, 'dog_food.jpg'),
-(5, 'Dog Shampoo', 'dog', 18.00, 25, 'dog_food.jpg'),
-(6, 'Cat Litter', 'cat', 12.00, 40, 'dog_food.jpg'),
-(7, 'Pet Bed', 'dog', 35.00, 10, 'dog_food.jpg'),
-(8, 'Cat Collar', 'cat', 8.00, 60, 'dog_food.jpg'),
-(9, 'Dog Food', 'dog', 10.00, 50, 'dog_food.jpg'),
-(10, 'Cat Treats', 'cat', 14.00, 70, 'dog_food.jpg'),
-(11, 'Pet Blanket', 'dog', 22.00, 20, 'dog_food.jpg'),
-(12, 'Fish Food', 'fish', 5.00, 80, 'dog_food.jpg'),
-(13, 'Bird Cage', 'bird', 45.00, 10, 'dog_food.jpg'),
-(14, 'Turtle Tank', 'turtle', 90.00, 5, 'dog_food.jpg');
+(1, 'Cat Food', 'cat', 20.00, 50, 'cat_food.jpg'),
+(2, 'Dog Toy', 'dog', 15.00, 30, 'dog_toy.jpg'),
+(3, 'Leash', 'dog', 25.00, 20, 'leash.jpg'),
+(4, 'Cat Scratcher', 'cat', 30.00, 15, 'cat_scratcher.jpg'),
+(5, 'Dog Shampoo', 'dog', 18.00, 25, 'dog_shampoo.jpg'),
+(6, 'Cat Litter', 'cat', 12.00, 40, 'cat_litter.jpg'),
+(7, 'Pet Bed', 'dog', 35.00, 10, 'pet_bed.jpg'),
+(8, 'Cat Collar', 'cat', 8.00, 60, 'cat_coller.jpg'),
+(9, 'Dog Food', 'dog', 10.00, 50, 'dog_food_2.jpg'),
+(10, 'Cat Treats', 'cat', 14.00, 70, 'cat_treats.jpg'),
+(11, 'Pet Blanket', 'dog', 22.00, 20, 'pet_blankets.jpg'),
+(12, 'Fish Food', 'fish', 5.00, 80, 'fish_food.jpg'),
+(13, 'Bird Cage', 'bird', 45.00, 10, 'bird_cage.jpg'),
+(14, 'Turtle Tank', 'turtle', 90.00, 5, 'turtle_tank.jpg');
 
 
 -- -----------------------------------------------------
