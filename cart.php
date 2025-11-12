@@ -30,7 +30,7 @@ if (isset($_POST['add_to_cart'])) {
                 'id' => $product['product_id'],
                 'name' => $product['product_name'],
                 'price' => $product['price'],
-                'image' => $product['image'],
+                // 'image' => $product['image'],
                 'quantity' => 1
             ];
         }
@@ -94,7 +94,9 @@ foreach ($cart as $item) {
                     <?php foreach ($cart as $item): ?>
                         <tr style="text-align:center; border-bottom:1px solid #eee;">
                             <td style="padding:15px; display:flex; align-items:center; gap:15px;">
-                                <img src="assets/images/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>" style="width:60px; height:60px; object-fit:cover; border-radius:8px;">
+                                <img src="assets/images/Products/<?php echo htmlspecialchars($product['images']); ?>"
+                                    alt="<?php echo htmlspecialchars($product['product_name'] ?? ''); ?>"
+                                    style="max-height: 100%; max-width: 100%; object-fit: cover;">  
                                 <?php echo htmlspecialchars($item['name']); ?>
                             </td>
                             <td>₹<?php echo number_format($item['price'], 2); ?></td>
