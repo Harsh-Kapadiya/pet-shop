@@ -41,8 +41,12 @@ try {
 
                             <form method="post" action="adopt_request.php" style="text-align: center;">
                                 <input type="hidden" name="pet_id" value="<?php echo $pet['pet_id']; ?>">
-                                <button type="submit" name="adopt" style="background: #4CAF50; color: #fff; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer;">Adopt Now</button>
+                                <button type="submit" name="adopt"
+                                    style="background: var(--accent-green); color: var(--white); border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                    Adopt Now
+                                </button>
                             </form>
+
                         </div>
                     </div>
                 <?php endforeach; ?>

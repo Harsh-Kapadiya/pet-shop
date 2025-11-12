@@ -1,8 +1,8 @@
 <?php
-// Start session if not already started
-if (session_status() == PHP_SESSION_NONE) {
+if (session_status() === PHP_SESSION_NONE) {
     session_start();
 }
+
 
 // Include database connection
 // At the top of db_connect.php or a config file
