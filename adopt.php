@@ -26,9 +26,9 @@ try {
                     <div class="pet-card" style="background: #fff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.08); overflow: hidden; transition: transform 0.2s;">
                         <div style="height: 250px; background: #f0f0f0; display: flex; justify-content: center; align-items: center;">
                             <?php if (!empty($pet['images'])): ?>
-                                <img src="assets/images/pets/<?php echo htmlspecialchars($pet['images']); ?>" alt="<?php echo htmlspecialchars($pet['product_name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
+                                <img src="assets/images/pets/<?php echo htmlspecialchars($pet['images']); ?>" alt="<?php echo htmlspecialchars($pet['name']); ?>" style="width: 100%; height: 100%; object-fit: cover;">
                             <?php else: ?>
-                                <img src="assets/images/no-image.jpg" alt="No Image" style="width: 100%; height: 100%; object-fit: cover;">
+                                <img src="assets/images/pets/no-image.jpg" alt="No Image" style="width: 100%; height: 100%; object-fit: cover;">
                             <?php endif; ?>
                         </div>
 
