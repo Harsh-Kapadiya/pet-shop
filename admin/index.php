@@ -1,50 +1,40 @@
 <?php
-session_start();
-if (!isset($_SESSION['admin_id'])) {
-    header('Location: index.php');
-    exit;
-}
-require_once __DIR__ . '/../includes/db_connect.php';
-?>
+include 'includes/admin_header.php';
 
-<?php
-session_start();
-require_once __DIR__ . '/../includes/db_connect.php';
-
-if (isset($_SESSION['admin_id'])) {
-    header('Location: pets.php');
-    exit;
-}
-
-$error = '';
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username'] ?? '');
-    $password = $_POST['password'] ?? '';
-
-    $stmt = $pdo->prepare('SELECT admin_id, password_hash, fullname FROM admins WHERE username = ?');
-    $stmt->execute([$username]);
-    $admin = $stmt->fetch();
-
-    if ($admin && password_verify($password, $admin['password_hash'])) {
-        $_SESSION['admin_id'] = $admin['admin_id'];
-        $_SESSION['admin_name'] = $admin['fullname'];
-        header('Location: pets.php');
-        exit;
-    } else {
-        $error = 'Invalid username or password.';
-    }
+// Fetching counts
+try {
+    $petsCount = $pdo->query("SELECT COUNT(*) FROM Pets")->fetchColumn();
+    $productsCount = $pdo->query("SELECT COUNT(*) FROM Products")->fetchColumn();
+} catch (PDOException $e) {
+    $petsCount = $productsCount = 0;
 }
 ?>
-<!DOCTYPE html>
-<html>
-<head><title>Admin Login</title></head>
-<body>
-<h2>Admin Login</h2>
-<?php if ($error): ?><p style="color:red"><?php echo $error; ?></p><?php endif; ?>
-<form method="post">
-  <label>Username:<br><input name="username" required></label><br>
-  <label>Password:<br><input type="password" name="password" required></label><br>
-  <button type="submit">Login</button>
-</form>
-</body>
-</html>
+
+<div style="padding:40px;">
+    <h1 style="text-align:center; margin-bottom:40px;">Welcome, Admin 👋</h1>
+
+    <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap:25px;">
+
+        <div style="background:white;padding:25px;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.1);text-align:center;">
+            <h2>🐶 Pets</h2>
+            <p style="font-size:30px;font-weight:bold;margin:10px 0;"><?php echo $petsCount; ?></p>
+            <a href="view_pets.php" style="display:inline-block;margin:5px;padding:8px 15px;background:var(--primary-green);color:white;border-radius:5px;text-decoration:none;">View Pets</a>
+            <a href="add_pet.php" style="display:inline-block;margin:5px;padding:8px 15px;background:#555;color:white;border-radius:5px;text-decoration:none;">Add Pet</a>
+        </div>
+
+        <div style="background:white;padding:25px;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.1);text-align:center;">
+            <h2>🛒 Products</h2>
+            <p style="font-size:30px;font-weight:bold;margin:10px 0;"><?php echo $productsCount; ?></p>
+            <a href="view_products.php" style="display:inline-block;margin:5px;padding:8px 15px;background:var(--primary-green);color:white;border-radius:5px;text-decoration:none;">View Products</a>
+            <a href="add_product.php" style="display:inline-block;margin:5px;padding:8px 15px;background:#555;color:white;border-radius:5px;text-decoration:none;">Add Product</a>
+        </div>
+
+        <div style="background:white;padding:25px;border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,0.1);text-align:center;">
+            <h2>⚙️ Admin Actions</h2>
+            <p>Manage data, update content, and maintain your petshop efficiently.</p>
+            <a href="logout.php" style="display:inline-block;margin-top:15px;padding:10px 20px;background:red;color:white;border-radius:5px;text-decoration:none;">Logout</a>
+        </div>
+    </div>
+</div>
+
+<?php include 'includes/admin_footer.php'; ?>

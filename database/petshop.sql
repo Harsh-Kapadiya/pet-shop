@@ -67,7 +67,7 @@ INSERT INTO Products (product_id, product_name, product_for, price, stock_quanti
 CREATE TABLE Customers (
     cid INT PRIMARY KEY,
     cname VARCHAR(100) NOT NULL,
-    email VARCHAR(100) UNIQUE NOT NULL,
+    email VARCHAR(100) UNIQUE,
     address VARCHAR(255),
     ph_no BIGINT,
     password VARCHAR(255) NOT NULL
@@ -149,8 +149,11 @@ INSERT INTO Book_appointment (appointment_id, doctor_id, time, pet_category, bre
 -- 6. ADMIN TABLE
 -- -----------------------------------------------------
 CREATE TABLE Admin (
+    admin_name varchar(50),
     admin_id INT PRIMARY KEY,
     shop_address VARCHAR(255),
+    email VARCHAR(100) UNIQUE NOT NULL,
+    PASSWORD BIGINT,
     ph_no BIGINT,
     doctor_id INT,
     product_id INT,
@@ -160,19 +163,7 @@ CREATE TABLE Admin (
 
 INSERT INTO Admin (admin_id, shop_address, ph_no, doctor_id, product_id) VALUES
 (1, '456 Pet St, Cityville', 9876543210, 1, 2),
-(2, '789 Park Ave, Metrocity', 9876500020, 2, 4),
-(3, '123 Hill Rd, Hilltown', 9876500030, 3, 6),
-(4, '45 Rose St, Townsville', 9876500040, 4, 1),
-(5, '67 Lake View, Eastend', 9876500050, 5, 3),
-(6, '88 Maple Rd, Cityville', 9876500060, 6, 5),
-(7, '32 Pearl Ave, Westend', 9876500070, 7, 7),
-(8, '99 Sun St, Smalltown', 9876500080, 8, 8),
-(9, '41 River Dr, Northcity', 9876500090, 9, 9),
-(10, '76 Star Rd, Patnagarh', 9876500100, 10, 10),
-(11, '12 Moon Rd, Patna', 9876500110, 11, 11),
-(12, '65 Greenway, Metrocity', 9876500120, 12, 12),
-(13, '84 Ocean Ave, Cityville', 9876500130, 13, 13),
-(14, '21 Elm St, Eastend', 9876500140, 14, 14);
+(2, '789 Park Ave, Metrocity', 9876500020, 2, 4)
 
 -- -----------------------------------------------------
 -- 7. ADOPTIONS TABLE
