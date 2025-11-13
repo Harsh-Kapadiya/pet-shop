@@ -17,20 +17,20 @@ CREATE TABLE Pets (
 );
 
 INSERT INTO Pets (pet_id, name, type, breed, age, images) VALUES
-(1, 'Luna', 'cat', 'Persian', 2, 'luna.jpg'),
-(2, 'Charlie', 'dog', 'Golden Retriever', 3,'charlie.jpg'),
-(3, 'Milo', 'cat', 'Siamese', 1, 'milo.jpg'),
-(4, 'Bella', 'dog', 'Beagle', 4, 'bella.jpg'),
-(5, 'Rocky', 'dog', 'Labrador', 2, 'rocky.jpg'),
-(6, 'Coco', 'cat', 'Maine Coon', 3, 'coco.jpg'),
-(7, 'Max', 'dog', 'Pug', 1, 'max.jpg'),
-(8, 'Simba', 'cat', 'Bengal', 2, 'simba.jpg'),
-(9, 'Buddy', 'dog', 'Husky', 4, 'buddy.jpg'),
-(10, 'Daisy', 'cat', 'British Shorthair', 5, 'daisy.jpg'),
-(11, 'Bruno', 'dog', 'Bulldog', 3, 'bruno.jpg'),
-(12, 'Oreo', 'cat', 'Ragdoll', 2, 'oreo.jpg'),
-(13, 'Shadow', 'dog', 'German Shepherd', 5, 'shadow.jpg'),
-(14, 'Chloe', 'cat', 'Sphynx', 1, 'chloe.jpg');
+(1, 'Luna', 'cat', 'Persian', 2, 'pets/luna.jpg'),
+(2, 'Charlie', 'dog', 'Golden Retriever', 3,'pets/charlie.jpg'),
+(3, 'Milo', 'cat', 'Siamese', 1, 'pets/milo.jpg'),
+(4, 'Bella', 'dog', 'Beagle', 4, 'pets/bella.jpg'),
+(5, 'Rocky', 'dog', 'Labrador', 2, 'pets/rocky.jpg'),
+(6, 'Coco', 'cat', 'Maine Coon', 3, 'pets/coco.jpg'),
+(7, 'Max', 'dog', 'Pug', 1, 'pets/max.jpg'),
+(8, 'Simba', 'cat', 'Bengal', 2, 'pets/simba.jpg'),
+(9, 'Buddy', 'dog', 'Husky', 4, 'pets/buddy.jpg'),
+(10, 'Daisy', 'cat', 'British Shorthair', 5, 'pets/daisy.jpg'),
+(11, 'Bruno', 'dog', 'Bulldog', 3, 'pets/bruno.jpg'),
+(12, 'Oreo', 'cat', 'Ragdoll', 2, 'pets/oreo.jpg'),
+(13, 'Shadow', 'dog', 'German Shepherd', 5, 'pets/shadow.jpg'),
+(14, 'Chloe', 'cat', 'Sphynx', 1, 'pets/chloe.jpg');
 
 -- -----------------------------------------------------
 -- 2. PRODUCTS TABLE (updated with image path)
@@ -45,20 +45,21 @@ CREATE TABLE Products (
 );
 
 INSERT INTO Products (product_id, product_name, product_for, price, stock_quantity, images) VALUES
-(1, 'Cat Food', 'cat', 20.00, 50, 'cat_food.jpg'),
-(2, 'Dog Toy', 'dog', 15.00, 30, 'dog_toy.jpg'),
-(3, 'Leash', 'dog', 25.00, 20, 'leash.jpg'),
-(4, 'Cat Scratcher', 'cat', 30.00, 15, 'cat_scratcher.jpg'),
-(5, 'Dog Shampoo', 'dog', 18.00, 25, 'dog_shampoo.jpg'),
-(6, 'Cat Litter', 'cat', 12.00, 40, 'cat_litter.jpg'),
-(7, 'Pet Bed', 'dog', 35.00, 10, 'pet_bed.jpg'),
-(8, 'Cat Collar', 'cat', 8.00, 60, 'cat_coller.jpg'),
-(9, 'Dog Food', 'dog', 10.00, 50, 'dog_food_2.jpg'),
-(10, 'Cat Treats', 'cat', 14.00, 70, 'cat_treats.jpg'),
-(11, 'Pet Blanket', 'dog', 22.00, 20, 'pet_blankets.jpg'),
-(12, 'Fish Food', 'fish', 5.00, 80, 'fish_food.jpg'),
-(13, 'Bird Cage', 'bird', 45.00, 10, 'bird_cage.jpg'),
-(14, 'Turtle Tank', 'turtle', 90.00, 5, 'turtle_tank.jpg');
+(1, 'Cat Food', 'cat', 20.00, 50, 'Products/cat_food.jpg'),
+(2, 'Dog Toy', 'dog', 15.00, 30, 'Products/dog_toy.jpg'),
+(3, 'Leash', 'dog', 25.00, 20, 'Products/leash.jpg'),
+(4, 'Cat Scratcher', 'cat', 30.00, 15, 'Products/cat_scratcher.jpg'),
+(5, 'Dog Shampoo', 'dog', 18.00, 25, 'Products/dog_shampoo.jpg'),
+(6, 'Cat Litter', 'cat', 12.00, 40, 'Products/cat_litter.jpg'),
+(7, 'Pet Bed', 'dog', 35.00, 10, 'Products/pet_bed.jpg'),
+(8, 'Cat Collar', 'cat', 8.00, 60, 'Products/cat_coller.jpg'),
+(9, 'Dog Food', 'dog', 10.00, 50, 'Products/dog_food_2.jpg'),
+(10, 'Cat Treats', 'cat', 14.00, 70, 'Products/cat_treats.jpg'),
+(11, 'Pet Blanket', 'dog', 22.00, 20, 'Products/pet_blankets.jpg'),
+(12, 'Fish Food', 'fish', 5.00, 80, 'Products/fish_food.jpg'),
+(13, 'Bird Cage', 'bird', 45.00, 10, 'Products/bird_cage.jpg'),
+(14, 'Turtle Tank', 'turtle', 90.00, 5, 'Products/turtle_tank.jpg');
+
 
 -- -----------------------------------------------------
 -- 3. CUSTOMERS TABLE
@@ -91,26 +92,32 @@ INSERT INTO Customers (cid, cname, email, address, ph_no, password) VALUES
 -- -----------------------------------------------------
 -- 4. DOCTORS TABLE
 -- -----------------------------------------------------
-CREATE TABLE Doctors (
-    doctor_id INT PRIMARY KEY,
-    doctor_name VARCHAR(100)
+CREATE TABLE Veterinarians(
+    vet_id INT PRIMARY KEY,
+    vet_name VARCHAR(100),
+    specialization VARCHAR(100),
+    working_days VARCHAR(255),
+    start_time TIME,
+    end_time TIME,
+    max_patients_per_day INT
 );
 
-INSERT INTO Doctors (doctor_id, doctor_name) VALUES
-(1, 'Dr. Smith'),
-(2, 'Dr. Johnson'),
-(3, 'Dr. Mehta'),
-(4, 'Dr. Sharma'),
-(5, 'Dr. Verma'),
-(6, 'Dr. Singh'),
-(7, 'Dr. Kapoor'),
-(8, 'Dr. Das'),
-(9, 'Dr. Bose'),
-(10, 'Dr. Rao'),
-(11, 'Dr. Menon'),
-(12, 'Dr. Iyer'),
-(13, 'Dr. Naik'),
-(14, 'Dr. Reddy');
+INSERT INTO Veterinarians (vet_id, vet_name, specialization, working_days, start_time, end_time, max_patients_per_day) VALUES
+(1, 'Dr. Smith', 'Small Animal Internal Medicine', 'Monday, Wednesday, Friday', '09:00:00', '17:00:00', 15),
+(2, 'Dr. Johnson', 'Dermatology (Animals)', 'Tuesday, Thursday', '10:00:00', '18:00:00', 12),
+(3, 'Dr. Lee', 'Avian & Exotics', 'Monday, Tuesday, Wednesday, Thursday, Friday', '08:30:00', '16:30:00', 20),
+(4, 'Dr. Sharma', 'Veterinary Neurology', 'Wednesday, Friday', '11:00:00', '19:00:00', 10),
+(5, 'Dr. Verma', 'Orthopedic Surgery (Animals)', 'Monday, Tuesday, Thursday', '09:30:00', '17:30:00', 14),
+(6, 'Dr. Singh', 'General Practice (Companion Animals)', 'Monday, Tuesday, Wednesday, Thursday, Friday, Saturday', '09:00:00', '13:00:00', 25),
+(7, 'Dr. Kapoor', 'Veterinary Ophthalmology', 'Tuesday, Thursday, Saturday', '10:00:00', '16:00:00', 18),
+(8, 'Dr. Das', 'Equine Medicine', 'Monday, Wednesday, Friday', '09:00:00', '17:00:00', 16),
+(9, 'Dr. Bose', 'Animal Behaviorist', 'Tuesday, Thursday', '10:00:00', '18:00:00', 8),
+(10, 'Dr. Rao', 'Reproductive Medicine (Animals)', 'Monday, Wednesday, Friday', '08:00:00', '16:00:00', 15),
+(11, 'Dr. Menon', 'Emergency & Critical Care', 'Tuesday, Thursday, Saturday', '09:00:00', '17:00:00', 13),
+(12, 'Dr. Iyer', 'Veterinary Oncology', 'Monday, Wednesday', '10:00:00', '18:00:00', 10),
+(13, 'Dr. Naik', 'Zoo & Wildlife Medicine', 'Tuesday, Thursday, Friday', '09:30:00', '17:30:00', 11),
+(14, 'Dr. Reddy', 'Veterinary Dentistry', 'Monday, Wednesday, Saturday', '08:30:00', '16:30:00', 14);
+
 
 -- -----------------------------------------------------
 -- 5. BOOK APPOINTMENT TABLE
@@ -152,7 +159,7 @@ CREATE TABLE Admin (
     admin_id INT PRIMARY KEY,
     shop_address VARCHAR(255),
     email VARCHAR(100) UNIQUE NOT NULL,
-    password VARCHAR(255),
+    PASSWORD BIGINT,
     ph_no BIGINT,
     doctor_id INT,
     product_id INT,
@@ -160,9 +167,9 @@ CREATE TABLE Admin (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
-INSERT INTO Admin (admin_name, admin_id, shop_address, email, password, ph_no, doctor_id, product_id) VALUES
-('Harsh',1, '456 Pet St, Cityville', 'harsh2345@gmail.com', '123456789', 9876543210, 1, 2),
-('Vikas', 2, '789 Park Ave, Metrocity','vk284356@gmail.com', '456789123', 9876500020, 2, 4);
+INSERT INTO Admin (admin_name, admin_id, shop_address, emial, password, ph_no, doctor_id, product_id) VALUES
+('Harsh',1, '456 Pet St, Cityville', 'harsh2345@gmail.com',123456789, 9876543210, 1, 2),
+('Vikas', 2, '789 Park Ave, Metrocity','vk284356@gmail.com', 456789123, 9876500020, 2, 4)
 
 -- -----------------------------------------------------
 -- 7. ADOPTIONS TABLE
