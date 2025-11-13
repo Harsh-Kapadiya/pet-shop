@@ -1,5 +1,6 @@
 <?php
 session_start();
+include 'includes/admin_header.php';
 require_once '../includes/db_connect.php';
 
 // Redirect if already logged in
@@ -142,3 +143,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 </body>
 
 </html>
+
+<?php include 'includes/admin_footer.php'; ?>

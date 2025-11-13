@@ -3,8 +3,8 @@ include 'includes/admin_header.php';
 
 // Fetching counts
 try {
-    $petsCount = $pdo->query("SELECT COUNT(*) FROM Pets")->fetchColumn();
-    $productsCount = $pdo->query("SELECT COUNT(*) FROM Products")->fetchColumn();
+    // $petsCount = $pdo->query("SELECT COUNT(*) FROM Pets")->fetchColumn();
+    // $productsCount = $pdo->query("SELECT COUNT(*) FROM Products")->fetchColumn();
 } catch (PDOException $e) {
     $petsCount = $productsCount = 0;
 }

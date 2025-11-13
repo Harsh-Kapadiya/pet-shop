@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once '../includes/db_connect.php';
+include 'includes/admin_header.php';
 
 // If admin already logged in
 if (isset($_SESSION['admin_id'])) {
@@ -212,3 +213,4 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
 </body>
 
 </html>
+<?php include 'includes/admin_footer.php'; ?>
