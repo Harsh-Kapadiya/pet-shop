@@ -1,9 +1,9 @@
 <?php
 session_start();
 require_once '../includes/db_connect.php';
-include 'includes/admin_header.php';
+// include 'includes/admin_header.php';
 
-// If admin already logged in
+// If admin logged in
 if (isset($_SESSION['admin_id'])) {
     header("Location: dashboard.php");
     exit;
@@ -48,10 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
                     $ph_no
                 ]);
 
-                // ---------------------------
-                // SUCCESSFUL SIGNUP → REDIRECT
-                // ---------------------------
-                $success_message = "Admin account created successfully!";
+                // SUCCESS → Redirect
+                $_SESSION['admin_signup_success'] = "Admin account created successfully!";
                 header("Location: admin_login.php");
                 exit;
             }
@@ -63,154 +61,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
+<!-- PAGE CONTENT (NO HTML, BODY, HEADER HERE) -->
+<div style="max-width:450px; margin:60px auto; background:#fff; padding:30px; 
+            border-radius:16px; box-shadow:0 6px 20px rgba(0,0,0,0.1);">
 
-<head>
-    <title>Admin Signup | Pet Haven</title>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <h2 style="text-align:center; color:#556b2f; margin-bottom:20px;">Admin Signup</h2>
 
-    <!-- INTERNAL CSS -->
-    <style>
-        :root {
-            --primary-green: #556b2f;
-            --secondary-green: #6b8e23;
-            --accent-green: #28a745;
-            --accent-red: #dc3545;
-            --white: #ffffff;
-            --grey-100: #f6f8f1;
-            --grey-300: #d4d8ce;
-        }
+    <?php if (!empty($error_message)): ?>
+        <div style="background:#ffe5e5; color:#b02a37; padding:12px; border-radius:6px; margin-bottom:15px; text-align:center;">
+            <?php echo $error_message; ?>
+        </div>
+    <?php endif; ?>
 
-        body {
-            background-color: var(--grey-100);
-            font-family: Arial, sans-serif;
-            padding: 40px;
-            display: flex;
-            justify-content: center;
-        }
+    <?php if (!empty($success_message)): ?>
+        <div style="background:#e8ffe8; color:#28a745; padding:12px; border-radius:6px; margin-bottom:15px; text-align:center;">
+            <?php echo $success_message; ?>
+        </div>
+    <?php endif; ?>
 
-        .signup-box {
-            background: var(--white);
-            width: 450px;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-        }
+    <form method="POST">
 
-        h2 {
-            text-align: center;
-            color: var(--primary-green);
-            margin-bottom: 20px;
-        }
+        <label style="font-weight:600; margin-top:12px;">Admin Name</label>
+        <input type="text" name="admin_name" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #d4d8ce;">
 
-        label {
-            font-weight: 600;
-            display: block;
-            margin-top: 12px;
-            margin-bottom: 5px;
-        }
+        <label style="font-weight:600; margin-top:12px;">Shop Address</label>
+        <input type="text" name="shop_address" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #d4d8ce;">
 
-        input {
-            width: 100%;
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid var(--grey-300);
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
+        <label style="font-weight:600; margin-top:12px;">Email</label>
+        <input type="email" name="email" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #d4d8ce;">
 
-        button {
-            width: 100%;
-            padding: 12px;
-            margin-top: 10px;
-            background-color: var(--primary-green);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
+        <label style="font-weight:600; margin-top:12px;">Phone Number</label>
+        <input type="text" name="ph_no" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #d4d8ce;">
 
-        button:hover {
-            background-color: var(--secondary-green);
-        }
+        <label style="font-weight:600; margin-top:12px;">Password</label>
+        <input type="password" name="password" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #d4d8ce;">
 
-        .error-box {
-            background: #ffe5e5;
-            color: var(--accent-red);
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
+        <label style="font-weight:600; margin-top:12px;">Confirm Password</label>
+        <input type="password" name="confirm_password" required style="width:100%; padding:12px; border-radius:8px; border:1px solid #d4d8ce;">
 
-        .success-box {
-            background: #e8ffe8;
-            color: var(--accent-green);
-            padding: 12px;
-            border-radius: 6px;
-            margin-bottom: 15px;
-            text-align: center;
-        }
+        <button type="submit" name="signup"
+            style="width:100%; padding:12px; margin-top:15px; background:#556b2f; color:#fff; border:none; 
+                       border-radius:8px; font-weight:600; cursor:pointer;">
+            Create Account
+        </button>
 
-        a {
-            text-decoration: none;
-            color: var(--primary-green);
-            font-weight: 600;
-        }
+    </form>
 
-        a:hover {
-            text-decoration: underline;
-        }
-    </style>
-</head>
+    <p style="margin-top:15px; text-align:center;">
+        Already have an account?
+        <a href="admin_login.php" style="color:#556b2f; font-weight:600;">Login</a>
+    </p>
 
-<body>
+</div>
 
-    <div class="signup-box">
-
-        <h2>Admin Signup</h2>
-
-        <?php if (!empty($error_message)): ?>
-            <div class="error-box"><?php echo $error_message; ?></div>
-        <?php endif; ?>
-
-        <?php if (!empty($success_message)): ?>
-            <div class="success-box"><?php echo $success_message; ?></div>
-        <?php endif; ?>
-
-        <form method="POST">
-
-            <label>Admin Name</label>
-            <input type="text" name="admin_name" required>
-
-            <label>Shop Address</label>
-            <input type="text" name="shop_address" required>
-
-            <label>Email</label>
-            <input type="email" name="email" required>
-
-            <label>Phone Number</label>
-            <input type="text" name="ph_no" required>
-
-            <label>Password</label>
-            <input type="password" name="password" required>
-
-            <label>Confirm Password</label>
-            <input type="password" name="confirm_password" required>
-
-            <button type="submit" name="signup">Create Account</button>
-        </form>
-
-        <p style="margin-top:15px; text-align:center;">
-            Already have an account? <a href="admin_login.php">Login</a>
-        </p>
-
-    </div>
-
-</body>
-
-</html>
 <?php include 'includes/admin_footer.php'; ?>
