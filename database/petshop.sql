@@ -17,20 +17,20 @@ CREATE TABLE Pets (
 );
 
 INSERT INTO Pets (pet_id, name, type, breed, age, images) VALUES
-(1, 'Luna', 'cat', 'Persian', 2, 'pets/luna.jpg'),
-(2, 'Charlie', 'dog', 'Golden Retriever', 3,'pets/charlie.jpg'),
-(3, 'Milo', 'cat', 'Siamese', 1, 'pets/milo.jpg'),
-(4, 'Bella', 'dog', 'Beagle', 4, 'pets/bella.jpg'),
-(5, 'Rocky', 'dog', 'Labrador', 2, 'pets/rocky.jpg'),
-(6, 'Coco', 'cat', 'Maine Coon', 3, 'pets/coco.jpg'),
-(7, 'Max', 'dog', 'Pug', 1, 'pets/max.jpg'),
-(8, 'Simba', 'cat', 'Bengal', 2, 'pets/simba.jpg'),
-(9, 'Buddy', 'dog', 'Husky', 4, 'pets/buddy.jpg'),
-(10, 'Daisy', 'cat', 'British Shorthair', 5, 'pets/daisy.jpg'),
-(11, 'Bruno', 'dog', 'Bulldog', 3, 'pets/bruno.jpg'),
-(12, 'Oreo', 'cat', 'Ragdoll', 2, 'pets/oreo.jpg'),
-(13, 'Shadow', 'dog', 'German Shepherd', 5, 'pets/shadow.jpg'),
-(14, 'Chloe', 'cat', 'Sphynx', 1, 'pets/chloe.jpg');
+(1, 'Luna', 'cat', 'Persian', 2, 'luna.jpg'),
+(2, 'Charlie', 'dog', 'Golden Retriever', 3,'charlie.jpg'),
+(3, 'Milo', 'cat', 'Siamese', 1, 'milo.jpg'),
+(4, 'Bella', 'dog', 'Beagle', 4, 'bella.jpg'),
+(5, 'Rocky', 'dog', 'Labrador', 2, 'rocky.jpg'),
+(6, 'Coco', 'cat', 'Maine Coon', 3, 'coco.jpg'),
+(7, 'Max', 'dog', 'Pug', 1, 'max.jpg'),
+(8, 'Simba', 'cat', 'Bengal', 2, 'simba.jpg'),
+(9, 'Buddy', 'dog', 'Husky', 4, 'buddy.jpg'),
+(10, 'Daisy', 'cat', 'British Shorthair', 5, 'daisy.jpg'),
+(11, 'Bruno', 'dog', 'Bulldog', 3, 'bruno.jpg'),
+(12, 'Oreo', 'cat', 'Ragdoll', 2, 'oreo.jpg'),
+(13, 'Shadow', 'dog', 'German Shepherd', 5, 'shadow.jpg'),
+(14, 'Chloe', 'cat', 'Sphynx', 1, 'chloe.jpg');
 
 -- -----------------------------------------------------
 -- 2. PRODUCTS TABLE (updated with image path)
@@ -45,20 +45,20 @@ CREATE TABLE Products (
 );
 
 INSERT INTO Products (product_id, product_name, product_for, price, stock_quantity, images) VALUES
-(1, 'Cat Food', 'cat', 20.00, 50, 'products/cat_food.jpg'),
-(2, 'Dog Toy', 'dog', 15.00, 30, 'products/dog_toy.jpg'),
-(3, 'Leash', 'dog', 25.00, 20, 'products/leash.jpg'),
-(4, 'Cat Scratcher', 'cat', 30.00, 15, 'products/cat_scratcher.jpg'),
-(5, 'Dog Shampoo', 'dog', 18.00, 25, 'products/dog_shampoo.jpg'),
-(6, 'Cat Litter', 'cat', 12.00, 40, 'products/cat_litter.jpg'),
-(7, 'Pet Bed', 'dog', 35.00, 10, 'products/pet_bed.jpg'),
-(8, 'Cat Collar', 'cat', 8.00, 60, 'products/cat_collar.jpg'),
-(9, 'Dog Food', 'dog', 10.00, 50, 'products/dog_food_2.jpg'),
-(10, 'Cat Treats', 'cat', 14.00, 70, 'products/cat_treats.jpg'),
-(11, 'Pet Blanket', 'dog', 22.00, 20, 'products/pet_blanket.jpg'),
-(12, 'Fish Food', 'fish', 5.00, 80, 'products/fish_food.jpg'),
-(13, 'Bird Cage', 'bird', 45.00, 10, 'products/bird_cage.jpg'),
-(14, 'Turtle Tank', 'turtle', 90.00, 5, 'products/turtle_tank.jpg');
+(1, 'Cat Food', 'cat', 20.00, 50, 'cat_food.jpg'),
+(2, 'Dog Toy', 'dog', 15.00, 30, 'dog_toy.jpg'),
+(3, 'Leash', 'dog', 25.00, 20, 'leash.jpg'),
+(4, 'Cat Scratcher', 'cat', 30.00, 15, 'cat_scratcher.jpg'),
+(5, 'Dog Shampoo', 'dog', 18.00, 25, 'dog_shampoo.jpg'),
+(6, 'Cat Litter', 'cat', 12.00, 40, 'cat_litter.jpg'),
+(7, 'Pet Bed', 'dog', 35.00, 10, 'pet_bed.jpg'),
+(8, 'Cat Collar', 'cat', 8.00, 60, 'cat_collar.jpg'),
+(9, 'Dog Food', 'dog', 10.00, 50, 'dog_food_2.jpg'),
+(10, 'Cat Treats', 'cat', 14.00, 70, 'cat_treats.jpg'),
+(11, 'Pet Blanket', 'dog', 22.00, 20, 'pet_blanket.jpg'),
+(12, 'Fish Food', 'fish', 5.00, 80, 'fish_food.jpg'),
+(13, 'Bird Cage', 'bird', 45.00, 10, 'bird_cage.jpg'),
+(14, 'Turtle Tank', 'turtle', 90.00, 5, 'turtle_tank.jpg');
 
 -- -----------------------------------------------------
 -- 3. CUSTOMERS TABLE
