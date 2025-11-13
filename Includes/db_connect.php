@@ -1,7 +1,7 @@
 <?php
 if (!isset($pdo)) {
     $dbHost = '127.0.0.1';
-    $dbPort = '3307';
+    $dbPort = '3306';
     $dbName = 'petshop';
     $dbUser = 'root';
     $dbPass = ''; // or your password if set

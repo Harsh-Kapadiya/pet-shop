@@ -1,119 +1,213 @@
 <?php
+session_start();
 require_once '../includes/db_connect.php';
 
+// If admin already logged in
+if (isset($_SESSION['admin_id'])) {
+    header("Location: dashboard.php");
+    exit;
+}
 
-$error = '';
-$success = '';
+$error_message = '';
+$success_message = '';
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $admin_name = trim($_POST['admin_name']);
-    $shop_address = trim($_POST['shop_address']);
-    $email = trim($_POST['email']);
-    $password = trim($_POST['password']);
-    $confirm_password = trim($_POST['confirm_password']);
-    $ph_no = trim($_POST['ph_no']);
-    $doctor_id = trim($_POST['doctor_id']);
-    $product_id = trim($_POST['product_id']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['signup'])) {
 
-    // Basic validation
-    if (empty($admin_name) || empty($shop_address) || empty($email) || empty($password) || empty($confirm_password) || empty($ph_no)) {
-        $error = "Sabhi fields fill karna zaroori hai.";
-    } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        $error = "Invalid email address.";
-    } elseif ($password !== $confirm_password) {
-        $error = "Passwords match nahi kar rahe.";
+    $admin_name = $_POST['admin_name'] ?? '';
+    $shop_address = $_POST['shop_address'] ?? '';
+    $email = $_POST['email'] ?? '';
+    $ph_no = $_POST['ph_no'] ?? '';
+    $password = $_POST['password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
+
+    if ($password !== $confirm_password) {
+        $error_message = "Passwords do not match!";
     } else {
         try {
-            // Hash password
-            $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+            $check = $pdo->prepare("SELECT * FROM Admin WHERE email = ?");
+            $check->execute([$email]);
 
-            $stmt = $pdo->prepare("INSERT INTO Admin (admin_id, admin_name, shop_address, email, PASSWORD, ph_no, doctor_id, product_id) VALUES (NULL, :admin_name, :shop_address, :email, :password, :ph_no, :doctor_id, :product_id)");
-            $stmt->execute([
-                ':admin_name' => $admin_name,
-                ':shop_address' => $shop_address,
-                ':email' => $email,
-                ':password' => $hashed_password,
-                ':ph_no' => $ph_no,
-                ':doctor_id' => $doctor_id ?: NULL,
-                ':product_id' => $product_id ?: NULL
-            ]);
-            $success = "Admin account successfully created!";
+            if ($check->rowCount() > 0) {
+                $error_message = "Email is already registered.";
+            } else {
+                $admin_id = rand(1000, 9999);
+
+                $stmt = $pdo->prepare("
+                    INSERT INTO Admin 
+                    (admin_name, admin_id, shop_address, email, password, ph_no)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                ");
+
+                $stmt->execute([
+                    $admin_name,
+                    $admin_id,
+                    $shop_address,
+                    $email,
+                    $password,
+                    $ph_no
+                ]);
+
+                // ---------------------------
+                // SUCCESSFUL SIGNUP → REDIRECT
+                // ---------------------------
+                $success_message = "Admin account created successfully!";
+                header("Location: admin_login.php");
+                exit;
+            }
         } catch (PDOException $e) {
-            $error = "Error: " . $e->getMessage();
+            error_log("Admin Signup Error: " . $e->getMessage());
+            $error_message = "Something went wrong. Try again.";
         }
     }
 }
-
-// Fetch doctors and products for dropdown
-$doctors = $pdo->query("SELECT doctor_id, doctor_name FROM Doctors")->fetchAll();
-$products = $pdo->query("SELECT product_id, product_name FROM Products")->fetchAll();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <title>Admin Signup | Pet Haven</title>
     <meta charset="UTF-8">
-    <title>Admin Signup</title>
-    <link rel="stylesheet" href="assets/style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- INTERNAL CSS -->
+    <style>
+        :root {
+            --primary-green: #556b2f;
+            --secondary-green: #6b8e23;
+            --accent-green: #28a745;
+            --accent-red: #dc3545;
+            --white: #ffffff;
+            --grey-100: #f6f8f1;
+            --grey-300: #d4d8ce;
+        }
+
+        body {
+            background-color: var(--grey-100);
+            font-family: Arial, sans-serif;
+            padding: 40px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .signup-box {
+            background: var(--white);
+            width: 450px;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            color: var(--primary-green);
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-top: 12px;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid var(--grey-300);
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background-color: var(--primary-green);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: var(--secondary-green);
+        }
+
+        .error-box {
+            background: #ffe5e5;
+            color: var(--accent-red);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .success-box {
+            background: #e8ffe8;
+            color: var(--accent-green);
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+            color: var(--primary-green);
+            font-weight: 600;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 
 <body>
-    <section class="container" style="padding: 40px 20px; max-width: 500px; margin: auto; font-family: Arial, sans-serif;">
-        <div class="section-title" style="text-align: center; margin-bottom: 30px;">
-            <h2 style="font-size: 2rem; color: #333;">Create an Account</h2>
-            <p style="font-size: 1rem; color: #555;">Join Pet Haven and take care of your furry friends!</p>
-        </div>
+
+    <div class="signup-box">
+
+        <h2>Admin Signup</h2>
 
         <?php if (!empty($error_message)): ?>
-            <div style="background: #FEECEB; color: #CC0000; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; font-weight: 600;">
-                <i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($error_message); ?>
-            </div>
+            <div class="error-box"><?php echo $error_message; ?></div>
         <?php endif; ?>
 
         <?php if (!empty($success_message)): ?>
-            <div style="background: #E8F9E9; color: #009933; padding: 15px; border-radius: 10px; text-align: center; margin-bottom: 20px; font-weight: 600;">
-                <i class="fas fa-check-circle" style="margin-right: 8px;"></i> <?php echo htmlspecialchars($success_message); ?>
-            </div>
+            <div class="success-box"><?php echo $success_message; ?></div>
         <?php endif; ?>
 
-        <form method="post" style="background: #fff; padding: 30px 25px; border-radius: 15px; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
-            <?php
-            $fields = [
-                ['label' => 'Full Name', 'type' => 'text', 'name' => 'name'],
-                ['label' => 'Email Address', 'type' => 'email', 'name' => 'email'],
-                ['label' => 'Password', 'type' => 'password', 'name' => 'password'],
-                ['label' => 'Address', 'type' => 'text', 'name' => 'address'],
-                ['label' => 'Phone Number', 'type' => 'text', 'name' => 'ph_no'],
-            ];
+        <form method="POST">
 
-            foreach ($fields as $field):
-            ?>
-                <div style="margin-bottom: 20px;">
-                    <label for="<?= $field['name'] ?>" style="display: block; font-weight: 600; margin-bottom: 6px; color: #333;"><?= $field['label'] ?>:</label>
-                    <input
-                        type="<?= $field['type'] ?>"
-                        name="<?= $field['name'] ?>"
-                        id="<?= $field['name'] ?>"
-                        required
-                        style="width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; transition: 0.2s; outline: none;"
-                        onfocus="this.style.borderColor='#5b9bd5'; this.style.boxShadow='0 0 5px rgba(91, 155, 213, 0.3)';"
-                        onblur="this.style.borderColor='#ccc'; this.style.boxShadow='none';">
-                </div>
-            <?php endforeach; ?>
+            <label>Admin Name</label>
+            <input type="text" name="admin_name" required>
 
-            <button type="submit" name="signup" style="width: 100%; padding: 14px; background: #5b9bd5; color: #fff; font-size: 1rem; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; transition: background 0.2s;"
-                onmouseover="this.style.background='#4073b3';"
-                onmouseout="this.style.background='#5b9bd5';">
-                Sign Up
-            </button>
+            <label>Shop Address</label>
+            <input type="text" name="shop_address" required>
 
-            <p style="text-align: center; color: #777; margin-top: 15px; font-size: 0.9rem;">
-                Already have an account?
-                <a href="login.php" style="color: #009933; font-weight: 600; text-decoration: none;">Login here</a>
-            </p>
+            <label>Email</label>
+            <input type="email" name="email" required>
+
+            <label>Phone Number</label>
+            <input type="text" name="ph_no" required>
+
+            <label>Password</label>
+            <input type="password" name="password" required>
+
+            <label>Confirm Password</label>
+            <input type="password" name="confirm_password" required>
+
+            <button type="submit" name="signup">Create Account</button>
         </form>
-    </section>
+
+        <p style="margin-top:15px; text-align:center;">
+            Already have an account? <a href="admin_login.php">Login</a>
+        </p>
+
+    </div>
 
 </body>
 

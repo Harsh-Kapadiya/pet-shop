@@ -1,37 +1,80 @@
 <?php
-session_start();
-require_once '../includes/db_connect.php';
-
-// Redirect to login if admin not logged in
-if (!isset($_SESSION['admin'])) {
-    header('Location: ../login.php');
-    exit;
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel | Pet Haven</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-</head>
-<body>
-    <header style="background: var(--primary-green); color: white; padding: 15px 0;">
-        <div class="container" style="display:flex; justify-content:space-between; align-items:center;">
-            <h2 style="margin:0; font-weight:700;">🐾 Pet Haven Admin</h2>
-            
-            <nav>
-                <ul style="list-style:none; display:flex; gap:25px; margin:0; padding:0;">
-                    <li><a href="index.php" style="color:white; text-decoration:none; font-weight:600;">Home</a></li>
-                    <li><a href="check_appointment.php" style="color:white; text-decoration:none; font-weight:600;">Appointments</a></li>
-                    <li><a href="order_detailss.php" style="color:white; text-decoration:none; font-weight:600;">Orders</a></li>
-                    <li><a href="logout.php" style="color:white; text-decoration:none; font-weight:600;">Logout</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
+<!-- ADMIN HEADER -->
+<div style="
+    width:100%;
+    background-color:#ffffff;
+    padding:18px 30px;
+    box-shadow:0 2px 10px rgba(0,0,0,0.08);
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:Inter, sans-serif;
+    position:sticky;
+    top:0;
+    z-index:1000;
+">
 
-    <main class="container" style="padding: 30px;">
+    <!-- LOGO -->
+    <div style="font-family:Poppins, sans-serif; font-size:1.7rem; font-weight:700;">
+        <a href='../admin/dashboard.php' style="
+            color:#556b2f;
+            text-decoration:none;
+        ">
+            Pet Haven Admin
+        </a>
+    </div>
+
+    <!-- NAV MENU -->
+    <div style="display:flex; align-items:center; gap:20px;">
+
+        <a href='../admin/dashboard.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Dashboard</a>
+
+        <a href='../admin/add_pet.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Add Pet</a>
+
+        <a href='../admin/order_details.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Orders</a>
+
+        <a href='../admin/manage_pets.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Manage Pets</a>
+
+        <a href='../admin/manage_customers.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Customers</a>
+
+        <!-- LOGOUT BUTTON -->
+        <a href='../admin/logout.php' style="
+            padding:10px 20px;
+            background:#dc3545;
+            color:white;
+            border-radius:25px;
+            text-decoration:none;
+            font-weight:600;
+        ">Logout</a>
+    </div>
+</div>

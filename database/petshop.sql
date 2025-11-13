@@ -60,7 +60,6 @@ INSERT INTO Products (product_id, product_name, product_for, price, stock_quanti
 (13, 'Bird Cage', 'bird', 45.00, 10, 'bird_cage.jpg'),
 (14, 'Turtle Tank', 'turtle', 90.00, 5, 'turtle_tank.jpg');
 
-
 -- -----------------------------------------------------
 -- 3. CUSTOMERS TABLE
 -- -----------------------------------------------------
@@ -153,7 +152,7 @@ CREATE TABLE Admin (
     admin_id INT PRIMARY KEY,
     shop_address VARCHAR(255),
     email VARCHAR(100) UNIQUE NOT NULL,
-    PASSWORD BIGINT,
+    password VARCHAR(255),
     ph_no BIGINT,
     doctor_id INT,
     product_id INT,
@@ -161,9 +160,9 @@ CREATE TABLE Admin (
     FOREIGN KEY (product_id) REFERENCES Products(product_id)
 );
 
-INSERT INTO Admin (admin_name, admin_id, shop_address, emial, password, ph_no, doctor_id, product_id) VALUES
-('Harsh',1, '456 Pet St, Cityville', 'harsh2345@gmail.com',123456789, 9876543210, 1, 2),
-('Vikas', 2, '789 Park Ave, Metrocity','vk284356@gmail.com', 456789123, 9876500020, 2, 4)
+INSERT INTO Admin (admin_name, admin_id, shop_address, email, password, ph_no, doctor_id, product_id) VALUES
+('Harsh',1, '456 Pet St, Cityville', 'harsh2345@gmail.com', '123456789', 9876543210, 1, 2),
+('Vikas', 2, '789 Park Ave, Metrocity','vk284356@gmail.com', '456789123', 9876500020, 2, 4);
 
 -- -----------------------------------------------------
 -- 7. ADOPTIONS TABLE
