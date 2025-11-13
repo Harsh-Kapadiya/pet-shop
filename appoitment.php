@@ -17,58 +17,58 @@ $success_message = '';
 
 // --- Handle Appointment Booking POST Request ---
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_appointment'])) {
-    $vet_id = $_POST['vet_id'] ?? null;
+    $doctor_id = $_POST['doctor_id'] ?? null;
     $appointment_date = $_POST['appointment_date'] ?? null;
     $appointment_time = $_POST['appointment_time'] ?? null;
 
-    if ($vet_id && $appointment_date && $appointment_time) {
+    if ($doctor_id && $appointment_date && $appointment_time) {
         try {
-            // Check if the vet is available and has capacity for the selected slot
+            // Check if the doctor is available and has capacity for the selected slot
             // (Re-checking capacity at booking time to prevent race conditions)
             $stmt = $pdo->prepare("
-                SELECT v.max_patients_per_day, v.start_time, v.end_time
-                FROM Veterinarians v
-                WHERE v.vet_id = ?
+                SELECT d.max_patients_per_day, d.start_time, d.end_time
+                FROM Doctors d
+                WHERE d.doctor_id = ?
             ");
-            $stmt->execute([$vet_id]);
-            $vet_info = $stmt->fetch();
+            $stmt->execute([$doctor_id]);
+            $doctor_info = $stmt->fetch();
 
-            if (!$vet_info) {
-                throw new Exception("Selected veterinarian not found.");
+            if (!$doctor_info) {
+                throw new Exception("Selected doctor not found.");
             }
 
-            // Count existing appointments for this vet on this date
+            // Count existing appointments for this doctor on this date
             $stmt = $pdo->prepare("
                 SELECT COUNT(*) AS booked_count
                 FROM appointments
-                WHERE vet_id = ? AND appointment_date = ? AND status IN ('pending', 'confirmed')
+                WHERE doctor_id = ? AND appointment_date = ? AND status IN ('pending', 'confirmed')
             ");
-            $stmt->execute([$vet_id, $appointment_date]);
+            $stmt->execute([$doctor_id, $appointment_date]);
             $booked_count = $stmt->fetchColumn();
 
-            if ($booked_count >= $vet_info['max_patients_per_day']) {
-                throw new Exception("This veterinarian is fully booked for " . htmlspecialchars($appointment_date) . ".");
+            if ($booked_count >= $doctor_info['max_patients_per_day']) {
+                throw new Exception("This doctor is fully booked for " . htmlspecialchars($appointment_date) . ".");
             }
 
-            // Also check for duplicate appointments for the same user with the same vet at the same time
+            // Also check for duplicate appointments for the same user with the same doctor at the same time
             $stmt = $pdo->prepare("
                 SELECT COUNT(*) FROM appointments
-                WHERE user_id = ? AND vet_id = ? AND appointment_date = ? AND appointment_time = ? AND status IN ('pending', 'confirmed')
+                WHERE user_id = ? AND doctor_id = ? AND appointment_date = ? AND appointment_time = ? AND status IN ('pending', 'confirmed')
             ");
-            $stmt->execute([$user_id, $vet_id, $appointment_date, $appointment_time]);
+            $stmt->execute([$user_id, $doctor_id, $appointment_date, $appointment_time]);
             if ($stmt->fetchColumn() > 0) {
-                 throw new Exception("You already have an appointment with this vet at this specific time on this date.");
+                 throw new Exception("You already have an appointment with this doctor at this specific time on this date.");
             }
 
-            // Basic time slot validation (ensure submitted time is within vet's working hours)
-            if (strtotime($appointment_time) < strtotime($vet_info['start_time']) ||
-                strtotime($appointment_time) >= strtotime($vet_info['end_time'])) { // Use >= end_time as last slot should be before end_time
-                throw new Exception("Selected time is outside the veterinarian's working hours.");
+            // Basic time slot validation (ensure submitted time is within doctor's working hours)
+            if (strtotime($appointment_time) < strtotime($doctor_info['start_time']) ||
+                strtotime($appointment_time) >= strtotime($doctor_info['end_time'])) { // Use >= end_time as last slot should be before end_time
+                throw new Exception("Selected time is outside the doctor's working hours.");
             }
 
             // Insert the appointment
-            $ins = $pdo->prepare("INSERT INTO appointments (user_id, vet_id, appointment_date, appointment_time, status) VALUES (?, ?, ?, ?, 'pending')");
-            $ins->execute([$user_id, $vet_id, $appointment_date, $appointment_time]);
+            $ins = $pdo->prepare("INSERT INTO appointments (user_id, doctor_id, appointment_date, appointment_time, status) VALUES (?, ?, ?, ?, 'pending')");
+            $ins->execute([$user_id, $doctor_id, $appointment_date, $appointment_time]);
             $success_message = "Your appointment has been booked successfully! We look forward to seeing you.";
 
             // Redirect to prevent form re-submission on refresh
@@ -79,68 +79,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_appointment'])) 
             $error_message = "Booking failed: " . $e->getMessage();
         }
     } else {
-        $error_message = "Please select a veterinarian, date, and time.";
+        $error_message = "Please select a doctor, date, and time.";
     }
 }
 
 
 // --- Fetch Specializations for the dropdown ---
 try {
-    $stmt = $pdo->query("SELECT DISTINCT specialization FROM Veterinarians ORDER BY specialization");
+    $stmt = $pdo->query("SELECT DISTINCT specialization FROM Doctors ORDER BY specialization");
     $specializations = $stmt->fetchAll(PDO::FETCH_COLUMN);
 } catch (PDOException $e) {
     $error_message = "Failed to load specializations: " . $e->getMessage();
 }
 
-// --- Dynamic content for AJAX requests (to get available vets and times) ---
-if (isset($_GET['action']) && $_GET['action'] == 'get_available_vets' && isset($_GET['specialization']) && isset($_GET['date'])) {
+// --- Dynamic content for AJAX requests (to get available doctors and times) ---
+if (isset($_GET['action']) && $_GET['action'] == 'get_available_doctors' && isset($_GET['specialization']) && isset($_GET['date'])) {
     header('Content-Type: application/json');
 
     $selected_specialization = $_GET['specialization'];
     $selected_date = $_GET['date'];
     $day_of_week = date('l', strtotime($selected_date)); // e.g., 'Monday'
 
-    $available_vets_data = [];
+    $available_doctors_data = [];
 
     try {
-        // Query vets by specialization and working day
+        // Query doctors by specialization and working day
         $stmt = $pdo->prepare("
-            SELECT vet_id, vet_name, specialization, start_time, end_time, max_patients_per_day
-            FROM Veterinarians
+            SELECT doctor_id, doctor_name, specialization, start_time, end_time, max_patients_per_day
+            FROM Doctors
             WHERE specialization = ? AND FIND_IN_SET(?, working_days) > 0
-            ORDER BY vet_name
+            ORDER BY doctor_name
         ");
         $stmt->execute([$selected_specialization, $day_of_week]);
-        $vets_on_day = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $doctors_on_day = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        foreach ($vets_on_day as $vet) {
-            // Count total existing appointments for this vet on this date
+        foreach ($doctors_on_day as $doctor) {
+            // Count total existing appointments for this doctor on this date
             $stmt = $pdo->prepare("
                 SELECT COUNT(*) AS total_booked_today
                 FROM appointments
-                WHERE vet_id = ? AND appointment_date = ? AND status IN ('pending', 'confirmed')
+                WHERE doctor_id = ? AND appointment_date = ? AND status IN ('pending', 'confirmed')
             ");
-            $stmt->execute([$vet['vet_id'], $selected_date]);
+            $stmt->execute([$doctor['doctor_id'], $selected_date]);
             $total_booked_today = $stmt->fetchColumn();
 
-            // If vet is already fully booked for the day, skip them
-            if ($total_booked_today >= $vet['max_patients_per_day']) {
+            // If doctor is already fully booked for the day, skip them
+            if ($total_booked_today >= $doctor['max_patients_per_day']) {
                 continue;
             }
 
-            // Get specific booked time slots for this vet on this date
+            // Get specific booked time slots for this doctor on this date
             $stmt = $pdo->prepare("
                 SELECT appointment_time, COUNT(*) as bookings_at_time
                 FROM appointments
-                WHERE vet_id = ? AND appointment_date = ? AND status IN ('pending', 'confirmed')
+                WHERE doctor_id = ? AND appointment_date = ? AND status IN ('pending', 'confirmed')
                 GROUP BY appointment_time
             ");
-            $stmt->execute([$vet['vet_id'], $selected_date]);
+            $stmt->execute([$doctor['doctor_id'], $selected_date]);
             $booked_slots_details = $stmt->fetchAll(PDO::FETCH_KEY_PAIR); // ['10:00:00' => 3, '11:00:00' => 2]
 
             $available_time_slots = [];
-            $current_time_stamp = strtotime($vet['start_time']);
-            $end_time_stamp = strtotime($vet['end_time']);
+            $current_time_stamp = strtotime($doctor['start_time']);
+            $end_time_stamp = strtotime($doctor['end_time']);
             $appointment_duration_seconds = 30 * 60; // 30 minutes per appointment
 
             while ($current_time_stamp < $end_time_stamp) {
@@ -151,7 +151,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_available_vets' && isset($
 
                 // For simplicity, let's assume each 30-min slot can only take one patient.
                 // If a doctor can see multiple patients at the *exact same time slot*,
-                // you would need a more complex scheduling logic (e.g., specific slots per vet).
+                // you would need a more complex scheduling logic (e.g., specific slots per doctor).
                 // Here, we check if the slot has *any* booking. If max_patients_per_day is for the day,
                 // and not per 30-min block, this logic needs adjustment.
                 // For now, if max_patients_per_day implies total daily capacity *regardless of time*,
@@ -164,18 +164,18 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_available_vets' && isset($
                 $current_time_stamp += $appointment_duration_seconds;
             }
 
-            // Only add vet if they still have total daily capacity and available slots
-            if ($total_booked_today < $vet['max_patients_per_day'] && !empty($available_time_slots)) {
-                 $available_vets_data[] = [
-                    'vet_id' => $vet['vet_id'],
-                    'vet_name' => $vet['vet_name'],
-                    'specialization' => $vet['specialization'],
-                    'working_hours' => date('h:i A', strtotime($vet['start_time'])) . ' - ' . date('h:i A', strtotime($vet['end_time'])),
+            // Only add doctor if they still have total daily capacity and available slots
+            if ($total_booked_today < $doctor['max_patients_per_day'] && !empty($available_time_slots)) {
+                 $available_doctors_data[] = [
+                    'doctor_id' => $doctor['doctor_id'],
+                    'doctor_name' => $doctor['doctor_name'],
+                    'specialization' => $doctor['specialization'],
+                    'working_hours' => date('h:i A', strtotime($doctor['start_time'])) . ' - ' . date('h:i A', strtotime($doctor['end_time'])),
                     'available_slots' => $available_time_slots
                 ];
             }
         }
-        echo json_encode(['success' => true, 'vets' => $available_vets_data]);
+        echo json_encode(['success' => true, 'doctors' => $available_doctors_data]);
 
     } catch (PDOException $e) {
         echo json_encode(['success' => false, 'error' => "Database error: " . $e->getMessage()]);
@@ -185,7 +185,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_available_vets' && isset($
 ?>
 
 <section class="page-appointment container">
-    <h2 class="page-title">Book a Vet Appointment</h2>
+    <h2 class="page-title">Book a Doctor Appointment</h2>
 
     <?php if ($success_message || (isset($_GET['booked']) && $_GET['booked'] == 1)): ?>
         <div class="alert success text-center mb-md">
@@ -207,7 +207,7 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_available_vets' && isset($
         </div>
     <?php endif; ?>
 
-    <form method="post" class="appointment-form" id="vetAppointmentForm">
+    <form method="post" class="appointment-form" id="doctorAppointmentForm">
         <div class="form-group">
             <label for="specialization" class="form-label">Select Specialization:</label>
             <select name="specialization" id="specialization" class="form-input-select" required>
@@ -223,15 +223,15 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_available_vets' && isset($
             <input type="date" name="appointment_date" id="appointment_date" required class="form-input-date" min="<?= date('Y-m-d'); ?>">
         </div>
 
-        <div class="form-group" id="vet-selection-container" style="display: none;">
-            <label class="form-label">Available Veterinarians & Timings:</label>
-            <div id="available-vets">
-                <p>Please select a specialization and date to see available veterinarians.</p>
+        <div class="form-group" id="doctor-selection-container" style="display: none;">
+            <label class="form-label">Available Doctors & Timings:</label>
+            <div id="available-doctors">
+                <p>Please select a specialization and date to see available doctors.</p>
             </div>
         </div>
 
-        <!-- Hidden inputs for selected vet and time, populated by JS -->
-        <input type="hidden" name="vet_id" id="selected_vet_id">
+        <!-- Hidden inputs for selected doctor and time, populated by JS -->
+        <input type="hidden" name="doctor_id" id="selected_doctor_id">
         <input type="hidden" name="appointment_time" id="selected_appointment_time">
 
         <button type="submit" name="book_appointment" class="btn btn-primary-cta" id="bookAppointmentBtn" disabled>Book Appointment</button>
@@ -242,28 +242,28 @@ if (isset($_GET['action']) && $_GET['action'] == 'get_available_vets' && isset($
 document.addEventListener('DOMContentLoaded', function() {
     const specializationSelect = document.getElementById('specialization');
     const dateInput = document.getElementById('appointment_date');
-    const vetSelectionContainer = document.getElementById('vet-selection-container');
-    const availableVetsDiv = document.getElementById('available-vets');
-    const selectedVetIdInput = document.getElementById('selected_vet_id');
+    const doctorSelectionContainer = document.getElementById('doctor-selection-container');
+    const availableDoctorsDiv = document.getElementById('available-doctors');
+    const selectedDoctorIdInput = document.getElementById('selected_doctor_id');
     const selectedAppointmentTimeInput = document.getElementById('selected_appointment_time');
     const bookAppointmentBtn = document.getElementById('bookAppointmentBtn');
 
-    // Function to fetch and display available vets
-    function fetchAvailableVets() {
+    // Function to fetch and display available doctors
+    function fetchAvailableDoctors() {
         const specialization = specializationSelect.value;
         const date = dateInput.value;
 
         // Clear previous selections and disable button if inputs change
-        selectedVetIdInput.value = '';
+        selectedDoctorIdInput.value = '';
         selectedAppointmentTimeInput.value = '';
         bookAppointmentBtn.disabled = true;
 
         if (specialization && date) {
-            vetSelectionContainer.style.display = 'block';
-            availableVetsDiv.innerHTML = '<p class="text-center">Loading available veterinarians...</p>';
+            doctorSelectionContainer.style.display = 'block';
+            availableDoctorsDiv.innerHTML = '<p class="text-center">Loading available doctors...</p>';
 
 
-            fetch(`appointment.php?action=get_available_vets&specialization=${encodeURIComponent(specialization)}&date=${encodeURIComponent(date)}`)
+            fetch(`appointment.php?action=get_available_doctors&specialization=${encodeURIComponent(specialization)}&date=${encodeURIComponent(date)}`)
                 .then(response => {
                     if (!response.ok) {
                         throw new Error(`HTTP error! status: ${response.status}`);
@@ -272,25 +272,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .then(data => {
                     if (data.success) {
-                        if (data.vets.length > 0) {
-                            availableVetsDiv.innerHTML = ''; // Clear previous content
-                            data.vets.forEach(vet => {
-                                const vetCard = document.createElement('div');
-                                vetCard.classList.add('vet-card', 'mb-sm');
-                                vetCard.innerHTML = `
-                                    <h4>Dr. ${vet.vet_name} <span class="vet-specialization">(${vet.specialization})</span></h4>
-                                    <p>Working Hours: ${vet.working_hours}</p>
-                                    <div class="time-slots" data-vet-id="${vet.vet_id}">
-                                        ${Object.entries(vet.available_slots).map(([time_value, time_display]) => `
+                        if (data.doctors.length > 0) {
+                            availableDoctorsDiv.innerHTML = ''; // Clear previous content
+                            data.doctors.forEach(doctor => {
+                                const doctorCard = document.createElement('div');
+                                doctorCard.classList.add('doctor-card', 'mb-sm');
+                                doctorCard.innerHTML = `
+                                    <h4>Dr. ${doctor.doctor_name} <span class="doctor-specialization">(${doctor.specialization})</span></h4>
+                                    <p>Working Hours: ${doctor.working_hours}</p>
+                                    <div class="time-slots" data-doctor-id="${doctor.doctor_id}">
+                                        ${Object.entries(doctor.available_slots).map(([time_value, time_display]) => `
                                             <button type="button" class="time-slot-btn"
-                                                    data-vet-id="${vet.vet_id}"
+                                                    data-doctor-id="${doctor.doctor_id}"
                                                     data-time-value="${time_value}">
                                                 ${time_display}
                                             </button>
                                         `).join('')}
                                     </div>
                                 `;
-                                availableVetsDiv.appendChild(vetCard);
+                                availableDoctorsDiv.appendChild(doctorCard);
                             });
 
                             // Add event listeners to newly created time slot buttons
@@ -302,39 +302,39 @@ document.addEventListener('DOMContentLoaded', function() {
                                     this.classList.add('selected');
 
                                     // Populate hidden inputs
-                                    selectedVetIdInput.value = this.dataset.vetId;
+                                    selectedDoctorIdInput.value = this.dataset.doctorId;
                                     selectedAppointmentTimeInput.value = this.dataset.timeValue;
                                     bookAppointmentBtn.disabled = false; // Enable book button
                                 });
                             });
 
                         } else {
-                            availableVetsDiv.innerHTML = '<p class="text-center">No veterinarians available for the selected specialization and date.</p>';
+                            availableDoctorsDiv.innerHTML = '<p class="text-center">No doctors available for the selected specialization and date.</p>';
                         }
                     } else {
-                        availableVetsDiv.innerHTML = `<p class="alert error text-center">Error: ${data.error}</p>`;
+                        availableDoctorsDiv.innerHTML = `<p class="alert error text-center">Error: ${data.error}</p>`;
                         console.error('Server error:', data.error);
                     }
                 })
                 .catch(error => {
-                    console.error('Error fetching vets:', error);
-                    availableVetsDiv.innerHTML = `<p class="alert error text-center">An error occurred while fetching veterinarians. Please try again.</p>`;
+                    console.error('Error fetching doctors:', error);
+                    availableDoctorsDiv.innerHTML = `<p class="alert error text-center">An error occurred while fetching doctors. Please try again.</p>`;
                 });
         } else {
-            vetSelectionContainer.style.display = 'none';
-            availableVetsDiv.innerHTML = '<p class="text-center">Please select a specialization and date to see available veterinarians.</p>';
+            doctorSelectionContainer.style.display = 'none';
+            availableDoctorsDiv.innerHTML = '<p class="text-center">Please select a specialization and date to see available doctors.</p>';
             bookAppointmentBtn.disabled = true;
         }
     }
 
     // Event listeners for specialization and date changes
-    specializationSelect.addEventListener('change', fetchAvailableVets);
-    dateInput.addEventListener('change', fetchAvailableVets);
+    specializationSelect.addEventListener('change', fetchAvailableDoctors);
+    dateInput.addEventListener('change', fetchAvailableDoctors);
 
     // Initial load for the date input to today
     dateInput.value = new Date().toISOString().split('T')[0];
-    // And fetch vets immediately if a specialization might be pre-selected or to show initial state
-    // fetchAvailableVets(); // Call this if you want to load results immediately on page load
+    // And fetch doctors immediately if a specialization might be pre-selected or to show initial state
+    // fetchAvailableDoctors(); // Call this if you want to load results immediately on page load
 });
 </script>
 
@@ -376,7 +376,7 @@ document.addEventListener('DOMContentLoaded', function() {
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         margin-top: var(--spacing-xl);
         text-align: center; /* Center content within the page section */
-        max-width: 900px; /* Increased width to better accommodate vet cards */
+        max-width: 900px; /* Increased width to better accommodate doctor cards */
         margin-left: auto;
         margin-right: auto;
         font-family: var(--font-body);
@@ -511,22 +511,22 @@ document.addEventListener('DOMContentLoaded', function() {
         box-shadow: none;
     }
 
-    /* Vet Selection Container */
-    #vet-selection-container {
+    /* Doctor Selection Container */
+    #doctor-selection-container {
         width: 100%;
         margin-top: var(--spacing-md);
         text-align: left;
     }
 
-    #available-vets p {
+    #available-doctors p {
         color: var(--light-text);
         text-align: center;
         margin: var(--spacing-md) 0;
         font-style: italic;
     }
 
-    /* Vet Card Styling */
-    .vet-card {
+    /* Doctor Card Styling */
+    .doctor-card {
         background-color: var(--white);
         border: 1px solid var(--grey-200);
         border-radius: 8px;
@@ -536,12 +536,12 @@ document.addEventListener('DOMContentLoaded', function() {
         transition: transform 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .vet-card:hover {
+    .doctor-card:hover {
         transform: translateY(-3px);
         box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
     }
 
-    .vet-card h4 {
+    .doctor-card h4 {
         margin-top: 0;
         margin-bottom: var(--spacing-xs);
         color: var(--primary-green);
@@ -549,14 +549,14 @@ document.addEventListener('DOMContentLoaded', function() {
         font-family: var(--font-heading);
     }
 
-    .vet-specialization {
+    .doctor-specialization {
         font-size: 0.9em;
         color: var(--light-text);
         font-weight: normal;
         margin-left: var(--spacing-xs);
     }
 
-    .vet-card p {
+    .doctor-card p {
         margin-bottom: var(--spacing-sm);
         color: var(--light-text);
         font-size: 0.95em;
@@ -658,10 +658,10 @@ document.addEventListener('DOMContentLoaded', function() {
         .btn-primary-cta {
             max-width: 100%; /* Allow full width on very small screens */
         }
-        .vet-card h4 {
+        .doctor-card h4 {
             font-size: 1.15rem;
         }
-        .vet-specialization {
+        .doctor-specialization {
             display: block; /* Stack specialization below name on tiny screens */
             margin-left: 0;
             margin-top: var(--spacing-xs);
