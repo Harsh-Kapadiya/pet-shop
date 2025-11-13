@@ -17,23 +17,21 @@ $errors = [];
 $success = '';
 
 // Helper: normalize day names to 3-letter short (Mon, Tue, ...)
-function get_short_day($date)
-{
+function get_short_day($date) {
     return date('D', strtotime($date)); // Mon, Tue, Wed...
 }
 
 // Helper: parse working_days string and decide if a given date is working
 // supports formats like: "Mon, Wed, Fri" or "Mon-Fri" or "Mon,Wed,Fri"
-function is_working_day($working_days_string, $date)
-{
+function is_working_day($working_days_string, $date) {
     $dayShort = get_short_day($date); // e.g. "Mon"
     $s = str_replace(' ', '', $working_days_string);
-    $s = str_replace(array('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'), array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'), $s);
+    $s = str_replace(array('Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'), array('Mon','Tue','Wed','Thu','Fri','Sat','Sun'), $s);
 
     // If has '-', treat as range e.g. Mon-Fri
     if (strpos($s, '-') !== false) {
         list($start, $end) = explode('-', $s, 2);
-        $order = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        $order = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
         $startIndex = array_search($start, $order);
         $endIndex = array_search($end, $order);
         if ($startIndex === false || $endIndex === false) return false;
@@ -51,8 +49,7 @@ function is_working_day($working_days_string, $date)
 }
 
 // Function to generate 30-min slots between start and end (returns 'H:i:s' strings)
-function generate_slots($start_time, $end_time, $step_minutes = 30)
-{
+function generate_slots($start_time, $end_time, $step_minutes = 30) {
     $slots = [];
     $current = strtotime($start_time);
     $end = strtotime($end_time);
@@ -74,12 +71,12 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_availability' && isset(
         $stmt->execute([$did]);
         $doc = $stmt->fetch(PDO::FETCH_ASSOC);
         if (!$doc) {
-            echo json_encode(['success' => false, 'error' => 'Doctor not found.']);
+            echo json_encode(['success'=>false,'error'=>'Doctor not found.']);
             exit;
         }
 
         if (!is_working_day($doc['working_days'], $date)) {
-            echo json_encode(['success' => false, 'error' => 'Doctor does not work on selected date.']);
+            echo json_encode(['success'=>false,'error'=>'Doctor does not work on selected date.']);
             exit;
         }
 
@@ -92,9 +89,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_availability' && isset(
         $stmt = $pdo->prepare("SELECT TIME(time) as t FROM Book_appointment WHERE doctor_id = ? AND DATE(time) = ? ORDER BY time");
         $stmt->execute([$did, $date]);
         $bookedRows = $stmt->fetchAll(PDO::FETCH_COLUMN);
-        $bookedSlots = array_map(function ($t) {
-            return $t;
-        }, $bookedRows);
+        $bookedSlots = array_map(function($t){ return $t; }, $bookedRows);
 
         $allSlots = generate_slots($doc['start_time'], $doc['end_time'], 30);
         $freeSlots = array_values(array_diff($allSlots, $bookedSlots));
@@ -102,7 +97,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_availability' && isset(
         $remaining_capacity = max(0, $doc['max_patients_per_day'] - $total_booked);
 
         echo json_encode([
-            'success' => true,
+            'success'=>true,
             'doctor' => $doc,
             'total_booked' => $total_booked,
             'remaining_capacity' => $remaining_capacity,
@@ -110,7 +105,7 @@ if (isset($_GET['action']) && $_GET['action'] === 'check_availability' && isset(
             'free_slots' => $freeSlots // consumer won't pick slot but useful for UI if needed
         ]);
     } catch (PDOException $e) {
-        echo json_encode(['success' => false, 'error' => $e->getMessage()]);
+        echo json_encode(['success'=>false,'error'=>$e->getMessage()]);
     }
     exit;
 }
@@ -153,9 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['book_appointment'])) 
                         $stmt = $pdo->prepare("SELECT TIME(time) as t FROM Book_appointment WHERE doctor_id = ? AND DATE(time) = ? ORDER BY time");
                         $stmt->execute([$doctor_id, $appointment_date]);
                         $bookedRows = $stmt->fetchAll(PDO::FETCH_COLUMN);
-                        $bookedSlots = array_map(function ($t) {
-                            return $t;
-                        }, $bookedRows);
+                        $bookedSlots = array_map(function($t){ return $t; }, $bookedRows);
 
                         // generate all slots
                         $allSlots = generate_slots($doc['start_time'], $doc['end_time'], 30);
@@ -238,9 +231,7 @@ if (isset($_SESSION['flash_success'])) {
                 </thead>
                 <tbody>
                     <?php if (empty($doctors)): ?>
-                        <tr>
-                            <td colspan="4" style="padding:12px; color:#666;">No doctors found.</td>
-                        </tr>
+                        <tr><td colspan="4" style="padding:12px; color:#666;">No doctors found.</td></tr>
                     <?php else: ?>
                         <?php foreach ($doctors as $d): ?>
                             <tr>
@@ -267,7 +258,7 @@ if (isset($_SESSION['flash_success'])) {
 
         <?php if (!empty($errors)): ?>
             <div style="background:#FFEDEE; color:#b02a37; padding:12px; border-radius:8px; margin-bottom:12px;">
-                <?php foreach ($errors as $err) echo '<div>' . htmlspecialchars($err) . '</div>'; ?>
+                <?php foreach ($errors as $err) echo '<div>'.htmlspecialchars($err).'</div>'; ?>
             </div>
         <?php endif; ?>
 
@@ -326,56 +317,56 @@ if (isset($_SESSION['flash_success'])) {
 </div>
 
 <script>
-    (function() {
-        const doctorSelect = document.getElementById('doctorSelect');
-        const dateInput = document.getElementById('appointmentDate');
-        const doctorMessage = document.getElementById('doctorMessage');
-        const bookBtn = document.getElementById('bookBtn');
+(function(){
+    const doctorSelect = document.getElementById('doctorSelect');
+    const dateInput = document.getElementById('appointmentDate');
+    const doctorMessage = document.getElementById('doctorMessage');
+    const bookBtn = document.getElementById('bookBtn');
 
-        // When doctor or date changes, check availability via AJAX
-        function checkAvailability() {
-            const did = doctorSelect.value;
-            const date = dateInput.value;
+    // When doctor or date changes, check availability via AJAX
+    function checkAvailability() {
+        const did = doctorSelect.value;
+        const date = dateInput.value;
+        doctorMessage.textContent = '';
+        bookBtn.disabled = false;
+
+        if (!did || !date) {
             doctorMessage.textContent = '';
-            bookBtn.disabled = false;
-
-            if (!did || !date) {
-                doctorMessage.textContent = '';
-                return;
-            }
-
-            doctorMessage.textContent = 'Checking availability...';
-
-            fetch(`appointment.php?action=check_availability&doctor_id=${encodeURIComponent(did)}&date=${encodeURIComponent(date)}`)
-                .then(r => r.json())
-                .then(data => {
-                    if (!data.success) {
-                        doctorMessage.innerHTML = '<span style="color:#b02a37;">' + (data.error || 'Not available') + '</span>';
-                        bookBtn.disabled = true;
-                    } else {
-                        const rem = data.remaining_capacity;
-                        const slots = data.free_slots_count;
-                        let msg = `Remaining capacity: ${rem}. Free time slots: ${slots}.`;
-                        doctorMessage.innerHTML = '<span style="color:#2c6b2f;">' + msg + '</span>';
-                        if (rem <= 0 || slots <= 0) {
-                            bookBtn.disabled = true;
-                        }
-                    }
-                })
-                .catch(err => {
-                    doctorMessage.innerHTML = '<span style="color:#b02a37;">Error checking availability</span>';
-                    bookBtn.disabled = true;
-                    console.error(err);
-                });
+            return;
         }
 
-        doctorSelect.addEventListener('change', checkAvailability);
-        dateInput.addEventListener('change', checkAvailability);
+        doctorMessage.textContent = 'Checking availability...';
 
-        // set default date to today
-        dateInput.value = new Date().toISOString().split('T')[0];
+        fetch(`appointment.php?action=check_availability&doctor_id=${encodeURIComponent(did)}&date=${encodeURIComponent(date)}`)
+            .then(r => r.json())
+            .then(data => {
+                if (!data.success) {
+                    doctorMessage.innerHTML = '<span style="color:#b02a37;">' + (data.error || 'Not available') + '</span>';
+                    bookBtn.disabled = true;
+                } else {
+                    const rem = data.remaining_capacity;
+                    const slots = data.free_slots_count;
+                    let msg = `Remaining capacity: ${rem}. Free time slots: ${slots}.`;
+                    doctorMessage.innerHTML = '<span style="color:#2c6b2f;">' + msg + '</span>';
+                    if (rem <= 0 || slots <= 0) {
+                        bookBtn.disabled = true;
+                    }
+                }
+            })
+            .catch(err => {
+                doctorMessage.innerHTML = '<span style="color:#b02a37;">Error checking availability</span>';
+                bookBtn.disabled = true;
+                console.error(err);
+            });
+    }
 
-    })();
+    doctorSelect.addEventListener('change', checkAvailability);
+    dateInput.addEventListener('change', checkAvailability);
+
+    // set default date to today
+    dateInput.value = new Date().toISOString().split('T')[0];
+
+})();
 </script>
 
 <?php include 'includes/footer.php'; ?>
