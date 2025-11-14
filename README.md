@@ -167,25 +167,14 @@ Cart system
 
 👥 Contributors  
 
-<p align="left">
+## 👥 Contributors
 
-<a href="https://github.com/kanikadrouna-02" target="_blank">
-  <img src="https://github.com/kanikadrouna-02.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Kanika Drouna"/>
-</a>
-
-<a href="https://github.com/Tiwari-priya16" target="_blank">
-  <img src="https://github.com/Tiwari-priya16.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Priya Tiwari"/>
-</a>
-
-<a href="https://github.com/Harsh-Kapadiya" target="_blank">
-  <img src="https://github.com/Harsh-Kapadiya.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Harsh Kapadiya"/>
-</a>
-
-<a href="#" target="_blank">
-  <img src="https://via.placeholder.com/90?text=S" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Sakshi"/>
-</a>
-
-</p>
+| Contributor | Profile |
+|---:|:---|
+| <img src="https://github.com/kanikadrouna-02.png" width="64" height="64" style="border-radius:50%;"> | [Kanika Drouna](https://github.com/kanikadrouna-02) |
+| <img src="https://github.com/Tiwari-priya16.png" width="64" height="64" style="border-radius:50%;"> | [Priya Tiwari](https://github.com/Tiwari-priya16) |
+| <img src="https://github.com/Harsh-Kapadiya.png" width="64" height="64" style="border-radius:50%;"> | [Harsh Kapadiya](https://github.com/Harsh-Kapadiya) |
+| <img src="https://via.placeholder.com/64?text=S" width="64" height="64" style="border-radius:50%;"> | Sakshi (to add) |
 
 
 
