@@ -167,15 +167,14 @@ Cart system
 
 👥 Contributors  
 
-## 👥 Contributors
+Thanks to everyone who helped build this project.
 
-| Contributor | Profile |
-|---:|:---|
-| <img src="https://github.com/kanikadrouna-02.png" width="64" height="64" style="border-radius:50%;"> | [Kanika Drouna](https://github.com/kanikadrouna-02) |
-| <img src="https://github.com/Tiwari-priya16.png" width="64" height="64" style="border-radius:50%;"> | [Priya Tiwari](https://github.com/Tiwari-priya16) |
-| <img src="https://github.com/Harsh-Kapadiya.png" width="64" height="64" style="border-radius:50%;"> | [Harsh Kapadiya](https://github.com/Harsh-Kapadiya) |
-| <img src="https://via.placeholder.com/64?text=S" width="64" height="64" style="border-radius:50%;"> | Sakshi (to add) |
-
+|      Name          |          GitHub Profile              |
+|--------------------|--------------------------------------|
+| **Kanika Drouna**  | (https://github.com/kanikadrouna-02) |
+| **Priya Tiwari**   | (https://github.com/Tiwari-priya16)  |
+| **Harsh Kapadiya** | (https://github.com/Harsh-Kapadiya)  |
+| **Sakshi**         | (https://github.com/Trisha-Gautam)   |
 
 
 📜 License
