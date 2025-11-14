@@ -32,9 +32,43 @@ if (session_status() === PHP_SESSION_NONE) {
     <!-- NAV MENU -->
     <div style="display:flex; align-items:center; gap:20px;">
 
-       
+        <a href='dashboard.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Dashboard</a>
+
+        <a href='add_pet.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Add Pet</a>
+
+        <a href='order_details.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Orders</a>
+
+        <a href='manage_pets.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Manage Pets</a>
+
+        <a href='../admin/manage_customers.php' style="
+            text-decoration:none;
+            font-weight:600;
+            color:#2c3e1f;
+            padding:6px 10px;
+        ">Manage Customers</a>
+
         <!-- LOGOUT BUTTON -->
-        <a href='logout.php' style="
+        <a href='../admin/logout.php' style="
             padding:10px 20px;
             background:#dc3545;
             color:white;

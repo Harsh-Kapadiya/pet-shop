@@ -62,25 +62,25 @@ try {
                 border-radius:25px;
                 text-decoration:none;
                 font-weight:600;
-            ">View Orders</a>
+            ">Manage Orders</a>
 
-            <a href='manage_pets.php' style="
+            <a href='check_appoitment.php' style="
                 padding:12px 22px;
                 background:#28A745;
                 color:white;
                 border-radius:25px;
                 text-decoration:none;
                 font-weight:600;
-            ">Manage Pets</a>
+            ">Manage Apoitments</a>
 
-            <a href='manage_customers.php' style="
+            <a href='add_product.php' style="
                 padding:12px 22px;
                 background:#2c3e1f;
                 color:white;
                 border-radius:25px;
                 text-decoration:none;
                 font-weight:600;
-            ">View Customers</a>
+            ">Manage Products</a>
 
         </div>
 
