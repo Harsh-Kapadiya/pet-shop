@@ -167,14 +167,57 @@ Cart system
 
 👥 Contributors  
 
-Thanks to everyone who helped build this project.
+## 👥 Contributors  
 
-| Name | GitHub Profile |
-|------|----------------|
-| **Kanika Drouna** | [github.com/kanikadrouna-02](https://github.com/kanikadrouna-02) |
-| **Priya Tiwari** | [github.com/Tiwari-priya16](https://github.com/Tiwari-priya16) |
-| **Harsh Kapadiya** | [github.com/Harsh-Kapadiya](https://github.com/Harsh-Kapadiya) |
-| **Sakshi** | *To be added* |
+<p align="left">
+
+<!-- Kanika -->
+<a href="https://github.com/kanikadrouna-02" target="_blank">
+  <img src="https://github.com/kanikadrouna-02.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Kanika Drouna"/>
+</a>
+
+<!-- Priya -->
+<a href="https://github.com/Tiwari-priya16" target="_blank">
+  <img src="https://github.com/Tiwari-priya16.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Priya Tiwari"/>
+</a>
+
+<!-- Harsh -->
+<a href="https://github.com/Harsh-Kapadiya" target="_blank">
+  <img src="https://github.com/Harsh-Kapadiya.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Harsh Kapadiya"/>
+</a>
+
+<!-- Sakshi (Placeholder) -->
+<a href="#" target="_blank">
+  <img src="## 👥 Contributors  
+
+<p align="left">
+
+<!-- Kanika -->
+<a href="https://github.com/kanikadrouna-02" target="_blank">
+  <img src="https://github.com/kanikadrouna-02.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Kanika Drouna"/>
+</a>
+
+<!-- Priya -->
+<a href="https://github.com/Tiwari-priya16" target="_blank">
+  <img src="https://github.com/Tiwari-priya16.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Priya Tiwari"/>
+</a>
+
+<!-- Harsh -->
+<a href="https://github.com/Harsh-Kapadiya" target="_blank">
+  <img src="https://github.com/Harsh-Kapadiya.png" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Harsh Kapadiya"/>
+</a>
+
+<!-- Sakshi (Placeholder) -->
+<a href="#" target="_blank">
+  <img src="https://via.placeholder.com/90?text=S" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Sakshi"/>
+</a>
+
+</p>
+" width="90" height="90" style="border-radius:50%; margin-right:20px;" alt="Sakshi"/>
+</a>
+
+</p>
+
 
 
 📜 License
