@@ -1,144 +1,184 @@
-Sure, here’s a clean and professional **README.md** file for your pet adoption and accessories website. You can copy this into your GitHub repo’s main directory.
+# 🐾 Pet Haven – Adopt, Shop & Care  
+A complete pet adoption, accessories, and vet appointment management system.
 
 ---
 
-# 🐾 Pet Shop – Adopt, Care & Love
+## 📌 Overview  
+Pet Haven is a full-stack web application where users can:
 
-## 📖 Overview
+- 🐶 Adopt pets  
+- 🛒 Buy pet accessories  
+- 🩺 Book vet appointments  
+- 👤 Manage their profile, orders, and appointments  
 
-**Pet Shop** is a web-based platform that allows users to adopt pets (like dogs, cats, rabbits, etc.), purchase accessories and food, and even book appointments with veterinarians for regular checkups.
-It’s built to make pet adoption and care more accessible and organized for animal lovers.
+Admins can:
 
----
+- Add and manage pets  
+- Add and manage products  
+- Review upcoming appointments  
+- View and manage orders  
 
-## 💡 Features
-
-### 🐶 Pet Adoption
-
-* Browse and adopt various pets (Dogs, Cats, Rabbits, Birds, etc.).
-* View detailed profiles of each pet with breed, age, and other details.
-* Request adoption online.
-
-### 🛒 Pet Accessories & Food
-
-* Explore a range of pet products such as food, collars, toys, cages, and more.
-* Add products to the cart and proceed to checkout.
-* Secure order management through database integration.
-
-### 🩺 Vet Appointments
-
-* Book appointments for regular health checkups.
-* Choose available doctors and time slots.
-* Get confirmation and reminders for booked appointments.
-
-### 👤 User Accounts
-
-* Register and log in securely.
-* Manage personal details, pets, and bookings.
-* Track previous orders and appointments.
+Built using **PHP**, **MySQL**, and a clean, modern UI.
 
 ---
 
-## ⚙️ Tech Stack
+## 🌟 Key Features  
 
-| Category     | Technologies Used                        |
-| ------------ | ---------------------------------------- |
-| **Frontend** | HTML, CSS, JavaScript, Bootstrap         |
-| **Backend**  | PHP (with PDO for database connectivity) |
-| **Database** | MySQL (via phpMyAdmin or XAMPP)          |
-| **Server**   | Apache (XAMPP environment)               |
+### 🐕 Pet Adoption  
+- Browse pets with images  
+- View details (name, type, breed, age)  
+- Submit adoption requests  
+- Requests stored in the database  
+
+### 🛍️ Pet Products Shop  
+- Product catalog with images  
+- Category filters  
+- Add, edit, delete products (Admin)  
+- Image upload support  
+
+### 🩺 Vet Appointment Booking  
+- Choose a doctor  
+- Validates availability and working days  
+- Auto-assigns the earliest free 30-minute slot  
+- Fully stored and manageable from the admin panel  
+
+### 🧑‍💻 Admin Panel  
+| Feature | Description |
+|--------|-------------|
+| 🐶 Manage Pets | Add, edit, delete pets |
+| 🛒 Manage Products | Add, edit, delete products |
+| 📅 Manage Appointments | View today’s and upcoming appointments |
+| 📦 Manage Orders | View and delete orders |
 
 ---
 
-## 🗂️ Folder Structure
+## 🏗️ Tech Stack  
+| Category | Technologies |
+|---------|--------------|
+| Frontend | HTML5, CSS3, Inline CSS, JavaScript |
+| Backend | PHP (PDO) |
+| Database | MySQL |
+| Server | Apache (XAMPP) |
+| Images | Stored under `/assets/images/` |
 
-```
-pet-shop/
+---
+
+## 📂 Project Structure  
+PetHaven/
 │
 ├── includes/
-│   ├── db_connect.php        # Database connection file
-│   └── header.php, footer.php
-│
-├── database/
-│   └── petshop.sql           # Database schema and data
+│ ├── header.php
+│ ├── footer.php
+│ ├── admin_header.php
+│ ├── admin_footer.php
+│ └── db_connect.php
 │
 ├── assets/
-│   ├── css/                  # Stylesheets
-│   ├── js/                   # JavaScript files
-│   └── images/               # Website images
+│ ├── css/
+│ ├── js/
+│ ├── images/
+│ ├── Pets/
+│ └── Products/
 │
-├── pages/
-│   ├── adopt.php
-│   ├── shop.php
-│   ├── appointment.php
-│   └── about.php
+├── admin/
+│ ├── manage_pets.php
+│ ├── manage_products.php
+│ ├── check_appointments.php
+│ ├── admin_login.php
+│ └── admin_signup.php
 │
-├── index.php                 # Homepage
-├── test_db.php               # Database connection testing file
+├── adopt.php
+├── adopt_request.php
+├── shop.php
+├── appointment.php
+├── orders.php
+├── dashboard.php
+├── index.php
+│
 └── README.md
-```
+
 
 ---
 
-## 🧩 Database Setup
+## 🗄️ Database Setup  
 
-1. Start **XAMPP** and run **Apache** + **MySQL**.
-2. Go to [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
-3. Create a database named `petshop`.
-4. Import the SQL file:
+1. Start XAMPP and enable **Apache** + **MySQL**  
+2. Open **phpMyAdmin**  
+3. Create a database named:  
 
-   ```
-   /database/petshop.sql
-   ```
-5. Open `includes/db_connect.php` and update your database credentials:
 
-   ```php
-   <?php
-   $host = '127.0.0.1';
-   $db = 'petshop';
-   $user = 'root';
-   $pass = '';
-   $port = 3306; // or 3307 if you changed it
+petshop
 
-   try {
-       $conn = new PDO("mysql:host=$host;port=$port;dbname=$db", $user, $pass);
-       $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-   } catch (PDOException $e) {
-       echo "Database connection failed: " . $e->getMessage();
-   }
-   ?>
-   ```
+4. Import your SQL file:  
 
----
 
-## 🚀 Running the Project
+petshop.sql
 
-1. Copy the project folder into:
+5. Make sure your `includes/db_connect.php` matches:
 
-   ```
-   C:\xampp\htdocs\
-   ```
-2. Start Apache and MySQL in XAMPP.
-3. Open your browser and go to:
+```php
+$host = 'localhost';
+$db = 'petshop';
+$user = 'root';
+$pass = '';
+$port = 3306;
 
-   ```
-   http://localhost/pet-shop/
-   ```
+try {
+ $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db", $user, $pass);
+ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+ die("Connection failed: " . $e->getMessage());
+}
 
----
+🚀 How to Run the Project
+Step 1 — Move Project
 
-## 🤝 Contributing
+Copy the folder to:
 
-Feel free to fork this repository, raise issues, or submit pull requests to enhance the project.
-Contributions like UI improvements, new features, or better database management are welcome!
+C:\xampp\htdocs\PetHaven\
 
----
+Step 2 — Start Server
 
-## 🐕 About
+Open XAMPP → Start Apache + MySQL
 
-This project is made for animal lovers who want to adopt pets responsibly and ensure their proper care.
-Built with ❤️ using PHP, MySQL, and a touch of creativity.
+Step 3 — Visit Website
+http://localhost/pet-shop/
 
----
+📸 Screenshots
 
-Would you like me to add a **screenshots** or **demo section** (with placeholders) in the README too? It’ll make the GitHub repo look more polished.
+Add your actual screenshots in the repo:
+
+Page	Screenshot
+Home	—
+Adopt	—
+Appointment Booking	—
+Admin Dashboard	—
+🚧 Upcoming Enhancements
+
+Online payment integration
+
+Email notifications
+
+User and admin analytics
+
+Multi-pet adoption
+
+Cart system
+
+👥 Contributors  
+
+Thanks to everyone who helped build this project.
+
+| Name | GitHub Profile |
+|------|----------------|
+| **Kanika Drouna** | [github.com/kanikadrouna-02](https://github.com/kanikadrouna-02) |
+| **Priya Tiwari** | [github.com/Tiwari-priya16](https://github.com/Tiwari-priya16) |
+| **Harsh Kapadiya** | [github.com/Harsh-Kapadiya](https://github.com/Harsh-Kapadiya) |
+| **Sakshi** | *To be added* |
+
+
+📜 License
+
+This project is licensed under the MIT License.
+
+❤️ Created by Harsh Kapadiya
