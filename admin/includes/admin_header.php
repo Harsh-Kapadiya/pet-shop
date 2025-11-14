@@ -60,12 +60,12 @@ if (session_status() === PHP_SESSION_NONE) {
             padding:6px 10px;
         ">Manage Pets</a>
 
-        <a href='../admin/manage_customers.php' style="
+        <a href='manage_products.php' style="
             text-decoration:none;
             font-weight:600;
             color:#2c3e1f;
             padding:6px 10px;
-        ">Manage Customers</a>
+        ">Manage Products</a>
 
         <!-- LOGOUT BUTTON -->
         <a href='../admin/logout.php' style="
