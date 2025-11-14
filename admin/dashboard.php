@@ -82,15 +82,6 @@ try {
                 font-weight:600;
             ">View Customers</a>
 
-            <a href='admin_more_details.php' style="
-                padding:12px 22px;
-                background:#8a9770;
-                color:white;
-                border-radius:25px;
-                text-decoration:none;
-                font-weight:600;
-            ">More Details</a>
-
         </div>
 
         <!-- CARDS GRID -->
