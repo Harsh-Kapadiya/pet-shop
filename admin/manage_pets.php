@@ -24,7 +24,7 @@ try {
             width:100%;border-collapse:collapse;background:white;border-radius:12px;
             box-shadow:0 4px 10px rgba(0,0,0,0.1);
         ">
-                <thead style="background:var(--primary-green);color:white;">
+                <thead style="background:var(--primary-green);color:#000;">
                     <tr>
                         <th style="padding:15px;">Image</th>
                         <th style="padding:15px;">Name</th>
@@ -39,7 +39,7 @@ try {
                     <?php foreach ($pets as $pet): ?>
                         <tr style="border-bottom:1px solid #eee;">
 
-                            <td style="padding:10px;">
+                            <td style="padding:15px;">
                                 <img src="../assets/images/Pets/<?php echo htmlspecialchars($pet['images']); ?>"
                                     style="width:90px;height:90px;border-radius:8px;object-fit:cover;">
                             </td>
