@@ -168,7 +168,7 @@ Cart system
 👥 Contributors  
 
 Thanks to everyone who helped build this project.
-
+3
 |      Name          |          GitHub Profile              |
 |--------------------|--------------------------------------|
 | **Kanika Drouna**  | (https://github.com/kanikadrouna-02) |
